@@ -103,8 +103,8 @@ const ProductCard: React.FC<{ product: ProductUI }> = ({ product }) => {
         <p className="text-xs text-gray-500 uppercase mb-2">{product.category ?? "Uncategorized"}</p>
 
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg font-bold text-red-700">₹{product.sellingPrice.toLocaleString("en-IN")}</span>
-          {product.mrp && product.mrp > product.sellingPrice && <span className="text-sm text-gray-400 line-through">₹{product.mrp.toLocaleString("en-IN")}</span>}
+          <span className="text-lg font-bold text-red-700">${product.sellingPrice.toLocaleString("en-IN")}</span>
+          {product.mrp && product.mrp > product.sellingPrice && <span className="text-sm text-gray-400 line-through">${product.mrp.toLocaleString("en-IN")}</span>}
         </div>
 
         <div className="flex justify-between text-xs text-gray-500">

@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/Application/Admin/ModalMediaBlock.jsx", "components/Application/Admin/ModalMedia.jsx", "components/Application/Admin/Media.jsx", "components/Application/Admin/LogoutButton.jsx", "components/Application/Admin/Editor.jsx", "components/Application/Admin/EditAction.jsx", "components/Application/Admin/DeleteAction.jsx", "components/Application/Admin/BreadCrumb.jsx", "components/Application/Admin/AdminSearchComp.jsx", "components/Application/Admin/AdminMobileSearch.jsx", "components/Application/Admin/ThemeSwitch.jsx", "components/Application/Admin/UploadMedia.jsx", "app/api/product/details/route.js", "app/api/product/details/[slug]/route.js", "app/api/coupon/get/[id]/route.js", "app/api/category/[id]/route.js"],
   "exclude": ["node_modules"]
 }

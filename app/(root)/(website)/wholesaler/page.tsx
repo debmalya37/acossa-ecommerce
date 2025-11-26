@@ -43,7 +43,7 @@ export default function WholesalePage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
-            src="https://images.unsplash.com/photo-1610189012906-47029676afba?q=80&w=2070&auto=format&fit=crop" 
+            src="/assets/images/hero/4.png" 
             alt="Saree Wholesale Background" 
             className="w-full h-full object-cover opacity-60"
           />

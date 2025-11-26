@@ -311,7 +311,7 @@ const [categories, setCategories] = useState<any[]>([]);
     {/* Banner 2 */}
     <div className="relative w-full overflow-hidden rounded-xl group">
       <img
-        src="/assets/images/hero/3.png"
+        src="/assets/images/hero/1.png"
         alt="Sangeet Edit"
         className="w-full h-[260px] md:h-[360px] lg:h-[420px] object-cover group-hover:scale-105 transition-all duration-700"
       />
@@ -325,7 +325,7 @@ const [categories, setCategories] = useState<any[]>([]);
        {/* =============================
          NEW SHOP BY CATEGORY (Screenshot Match)
          ============================= */}
-      <section className="py-16 bg-rose-50/50">
+      <section className="py-10 bg-rose-50/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-10">
             <h2 className="premium-serif text-3xl lg:text-4xl text-gray-900">Shop By Category</h2>
@@ -363,7 +363,7 @@ const [categories, setCategories] = useState<any[]>([]);
       {/* =====================================
      PREMIUM EDITORIAL BANNER SECTION
    ===================================== */}
-<section className="py-16 bg-white">
+<section className="py-10 bg-white">
   <div className="max-w-7xl mx-auto px-6 space-y-16">
 
     {/* ========== Banner 1 ========== */}
@@ -381,7 +381,7 @@ const [categories, setCategories] = useState<any[]>([]);
       {/* Right Content */}
       <div className="flex flex-col justify-center text-gray-800 px-4 md:px-8">
         <h2 className="premium-serif text-4xl md:text-5xl font-semibold text-emerald-900">
-          Simply<br />Solids
+          Simply Solids
         </h2>
 
         {/* Decorative Line */}
@@ -442,14 +442,14 @@ const [categories, setCategories] = useState<any[]>([]);
 {/* ========================================
     NEW CATALOGUE SECTION (Slider + Text)
    ======================================== */}
-<section className="py-20 bg-white">
+<section className="py-10 bg-white">
   <div className="max-w-7xl mx-auto px-6">
     <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
 
       {/* LEFT TEXT BLOCK */}
       <div className="col-span-1 flex flex-col items-start md:pr-10">
 
-        <h2 className="premium-serif text-4xl md:text-5xl font-semibold leading-tight text-gray-900">
+        <h2 className="premium-serif text-3xl md:text-5xl font-semibold leading-tight text-gray-900">
           Shop show-stopping<br />pieces from the<br />new catalogue.
         </h2>
 
@@ -525,8 +525,8 @@ const [categories, setCategories] = useState<any[]>([]);
 
 
       {/* Featured Collection */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-10 bg-white">
+        <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="premium-serif text-3xl text-rose-900">
             Featured Collection
           </h2>
@@ -580,7 +580,7 @@ const [categories, setCategories] = useState<any[]>([]);
       {/* <InstagramFeed /> */}
 
       {/* Testimonials */}
-      <section className="py-16 bg-white">
+      <section className="py-10 bg-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="premium-serif text-3xl text-rose-900">WEDDING VIBES</h2>
           <OrnateDivider />
@@ -604,7 +604,7 @@ const [categories, setCategories] = useState<any[]>([]);
       </section>
 
       {/* Blog / Editorial */}
-      <section className="py-16 bg-rose-50">
+      <section className="py-10 bg-rose-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center">
             <h2 className="premium-serif text-3xl text-rose-900">LATEST EDITORIALS</h2>

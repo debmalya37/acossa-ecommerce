@@ -109,7 +109,7 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
   href="/shop"
-  className="text-sm font-medium tracking-wide hover:text-rose-600 transition-colors"
+  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >
   Shop
 </Link>
@@ -121,7 +121,7 @@ const Header = () => {
                 onMouseEnter={() => setActiveDropdown(category)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <button className="text-sm font-medium tracking-wide hover:text-rose-600 transition-colors flex items-center gap-1">
+                <button className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors flex items-center gap-1">
                   {category}
                   {categories[category as keyof typeof categories].length > 0 && (
                     <ChevronDown size={14} />
@@ -139,7 +139,7 @@ const Header = () => {
                             <a
                               key={cat._id}
                               href={`/shop?category=${cat._id}`}
-                              className="block px-4 py-2 text-sm hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer"
+                              className="block px-4 py-2 text-base hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer"
                             >
                               {cat.name}
                             </a>
@@ -148,7 +148,7 @@ const Header = () => {
                             <a 
                               key={item}
                               href="/shop" 
-                              className="block px-4 py-2 text-sm hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer"
+                              className="block px-4 py-2 text-base hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer"
                             >
                               {item}
                             </a>
@@ -160,9 +160,9 @@ const Header = () => {
             ))}
             <Link
   href="/wholesaler"
-  className="text-sm font-medium tracking-wide hover:text-rose-600 transition-colors"
+  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >
-  Wholesaler
+  Wholesale
 </Link>
           </nav>
 
@@ -248,9 +248,9 @@ const Header = () => {
             ))}
             <Link
   href="/wholesaler"
-  className="text-sm font-medium tracking-wide hover:text-rose-600 transition-colors"
+  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >
-  Wholesaler
+  Wholesale
 </Link>
           </nav>
         </div>

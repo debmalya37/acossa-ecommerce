@@ -3,6 +3,7 @@
 import React from "react";
 // import Link from "next/link"; // Commented out for preview environment
 import { Facebook, Instagram, Youtube, Mail, Phone } from "lucide-react";
+import { BsWhatsapp } from "react-icons/bs";
 
 // Mock Link component for preview environment
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,14 +42,14 @@ const Footer = () => {
 
           {/* Social */}
           <div className="flex gap-4 mt-5">
-            <Link href="#" className="hover:text-rose-200 hover:scale-110 transition-transform">
+            <Link href="https://www.instagram.com/acossaenterprise" className="hover:text-rose-200 hover:scale-110 transition-transform">
               <Instagram size={20} />
             </Link>
-            <Link href="#" className="hover:text-rose-200 hover:scale-110 transition-transform">
+            <Link href="https://www.facebook.com/share/17WpRnhm3F/" className="hover:text-rose-200 hover:scale-110 transition-transform">
               <Facebook size={20} />
             </Link>
-            <Link href="#" className="hover:text-rose-200 hover:scale-110 transition-transform">
-              <Youtube size={20} />
+            <Link href="https://wa.me/919638000593" className="hover:text-rose-200 hover:scale-110 transition-transform">
+              <BsWhatsapp size={20} />
             </Link>
             <Link href="mailto:info@acossaenterprise.com" className="hover:text-rose-200 hover:scale-110 transition-transform">
               <Mail size={20} />
@@ -105,9 +106,10 @@ const Footer = () => {
 
       {/* BOTTOM BAR */}
       <div className="relative z-10 mt-12 border-t border-rose-800/50 pt-6">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-rose-200/80 gap-2">
-           <p>© {new Date().getFullYear()} ACOSAA. All rights reserved.</p>
-           <p>Designed with ❤️ in India</p>
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-rose-200/80 gap-2 text-center text-align-center">
+           <p></p>
+           <span><br />
+           <p>© {new Date().getFullYear()} ACOSAA. All rights reserved.</p>Designed with ❤️ in India</span>
            <p>Developed by ThinQit Media</p>
         </div>
       </div>

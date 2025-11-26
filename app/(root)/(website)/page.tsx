@@ -468,7 +468,7 @@ const [categories, setCategories] = useState<any[]>([]);
       <div className="col-span-2 overflow-x-auto scrollbar-hide">
         <div className="flex gap-6 w-max">
 
-          {premium.slice(2,6).map((p:any) => (
+          {premium.map((p:any) => (
             <div
               key={p._id}
               className="min-w-[240px] max-w-[260px] bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden border"
@@ -533,7 +533,7 @@ const [categories, setCategories] = useState<any[]>([]);
           <OrnateDivider />
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-            {premium.slice(2,6).map((p:any) => (
+            {premium.map((p:any) => (
               <article
                 key={p._id}
                 className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:-translate-y-1 transition"

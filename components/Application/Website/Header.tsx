@@ -87,13 +87,21 @@ const Header = () => {
           </button>
 
           {/* Logo */}
+          {/* Logo Section */}
           <div className="flex-shrink-0">
             <Link href="/">
-            
-            <h1 className="text-2xl md:text-3xl font-serif font-bold tracking-wider">
-              ACOSSA
-            </h1>
-            <p className="text-xs text-gray-600 text-center tracking-widest">ENTERPRISE</p>
+              {/* Using the path you specified. In a real app, ensure this file exists in public/assets/image/logo/ */}
+              <img 
+                src="/assets/images/logo/acossa.jpg" 
+                alt="ACOSSA ENTERPRISE" 
+                className="h-12 md:h-16 w-auto object-cover"
+                onError={(e: any) => {
+                   // Fallback if image is missing during preview
+                   e.target.style.display = 'none';
+                   e.target.nextSibling.style.display = 'block';
+                }}
+              />
+              <span className="hidden text-2xl font-serif font-bold tracking-wider">ACOSSA</span>
             </Link>
           </div>
 
@@ -150,6 +158,12 @@ const Header = () => {
                 )}
               </div>
             ))}
+            <Link
+  href="/wholesaler"
+  className="text-sm font-medium tracking-wide hover:text-rose-600 transition-colors"
+>
+  Wholesaler
+</Link>
           </nav>
 
           {/* Icons */}
@@ -232,6 +246,12 @@ const Header = () => {
                 )}
               </div>
             ))}
+            <Link
+  href="/wholesaler"
+  className="text-sm font-medium tracking-wide hover:text-rose-600 transition-colors"
+>
+  Wholesaler
+</Link>
           </nav>
         </div>
       )}

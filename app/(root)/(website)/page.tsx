@@ -9,6 +9,8 @@ import {
 import axios from "axios";
 import Link from "next/link";
 import { PRODUCT_DETAILS } from "@/routes/WebsiteRoute";
+import InstagramFeed from "@/components/Instagram";
+
 
 /**
  * Premium Saree Homepage (TSX)
@@ -59,6 +61,45 @@ const OrnateDivider: React.FC<{ className?: string }> = ({ className }) => (
   </div>
 );
 
+
+const staticCategories = [
+  { 
+    id: 1, 
+    label: "SUIT SETS", 
+    image: "https://womenplusindia.com/cdn/shop/files/3861_III.jpg?v=1683112670&width=850",
+    link: "/shop?category=suit-sets" 
+  },
+  { 
+    id: 2, 
+    label: "SAREES", 
+    image: "https://medias.utsavfashion.com/media/catalog/product/cache/1/image/500x/040ec09b1e35df139433887a97daa66f/e/m/embroidered-border-art-silk-t-saree-in-light-beige-v1-ssha1563.jpg",
+    link: "/shop" 
+  },
+  { 
+    id: 3, 
+    label: "KURTAS", 
+    image: "https://cdn.shopify.com/s/files/1/0572/5555/9212/files/BHKS709_5_e0daa2dc-abd0-458a-85f5-55013ada2546.jpg?v=1753699167",
+    link: "/shop" 
+  },
+  { 
+    id: 4, 
+    label: "LEHENGAS", 
+    image: "https://www.mymoledro.com/cdn/shop/files/4-_2_800x.jpg?v=1751284778",
+    link: "/shop" 
+  },
+  { 
+    id: 5, 
+    label: "GOWNS", 
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1983&auto=format&fit=crop",
+    link: "/shop" 
+  },
+  { 
+    id: 6, 
+    label: "CO-ORDS", 
+    image: "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?q=80&w=1934&auto=format&fit=crop",
+    link: "/shop" 
+  },
+];
 /* ---------------------------
    Mock Data
    --------------------------- */
@@ -281,30 +322,44 @@ const [categories, setCategories] = useState<any[]>([]);
 </section>
 
       {/* Shop By Category */}
-      <section className="py-16 bg-rose-50">
+       {/* =============================
+         NEW SHOP BY CATEGORY (Screenshot Match)
+         ============================= */}
+      <section className="py-16 bg-rose-50/50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center">
-            <h2 className="premium-serif text-3xl lg:text-4xl text-rose-900">SHOP BY CATEGORY</h2>
+          <div className="text-center mb-10">
+            <h2 className="premium-serif text-3xl lg:text-4xl text-gray-900">Shop By Category</h2>
             <OrnateDivider />
-            <p className="text-gray-600 max-w-2xl mx-auto">Explore our curated picks — embroidered sarees, opulent lehengas and more.</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-            {latest.slice(0, 4).map((c, i) => (
-              <div key={i} className="group relative rounded-2xl overflow-hidden shadow-lg bg-white">
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <img src={c.media?.[0]?.secure_url} alt={c.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-90" />
-                  <div className="absolute left-4 bottom-4 text-white">
-                    {/* <div className="text-sm font-medium">{c.count}</div> */}
-                    <h3 className="text-xl font-semibold premium-serif">{c.name}</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {staticCategories.map((cat) => (
+              <Link href={cat.link} key={cat.id} className="block">
+                <div className="relative group rounded-xl overflow-hidden aspect-[3/4] cursor-pointer shadow-md">
+                  {/* Image */}
+                  <img 
+                    src={cat.image} 
+                    alt={cat.label} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  
+                  {/* Overlay Gradient (optional, helps text pop if needed) */}
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
+
+                  {/* Label Pill */}
+                  <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-auto min-w-[140px] text-center">
+                    <div className="bg-black/85 backdrop-blur-sm text-white px-6 py-3 rounded text-xs font-bold tracking-[0.2em] uppercase shadow-lg group-hover:bg-black transition-colors">
+                      {cat.label}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
+
+
       {/* =====================================
      PREMIUM EDITORIAL BANNER SECTION
    ===================================== */}
@@ -522,39 +577,7 @@ const [categories, setCategories] = useState<any[]>([]);
 
 
       {/* Banner Blocks – Gilded / Prisme / Rang-e-Bagh style */}
-      <section className="py-16 bg-rose-50">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="relative rounded-lg overflow-hidden aspect-[3/1] md:aspect-[4/3]">
-            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=900&q=80" alt="gilded" className="w-full h-full object-cover brightness-95" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/10" />
-            <div className="absolute left-8 bottom-8 text-white">
-              {/* <h3 className="premium-serif text-2xl">Gilded Glamour</h3> */}
-              {/* <p className="text-sm text-gray-200">Modern cuts meet timeless zari craftsmanship.</p> */}
-              {/* <button className="mt-4 px-4 py-2 bg-ivory text-rose-900 rounded">Explore Now</button> */}
-            </div>
-          </div>
-
-          <div className="relative rounded-lg overflow-hidden aspect-[3/1] md:aspect-[4/3]">
-            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=900&q=80" alt="prisme" className="w-full h-full object-cover brightness-95" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/10" />
-            <div className="absolute left-8 bottom-8 text-white">
-              {/* <h3 className="premium-serif text-2xl">Prismé Collection</h3> */}
-              {/* <p className="text-sm text-gray-200">Fluid fabrics & versatile drapes.</p> */}
-              {/* <button className="mt-4 px-4 py-2 bg-ivory text-rose-900 rounded">Shop the Edit</button> */}
-            </div>
-          </div>
-
-          <div className="relative rounded-lg overflow-hidden aspect-[3/1] md:aspect-[4/3]">
-            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=900&q=80" alt="range" className="w-full h-full object-cover brightness-95" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/10" />
-            <div className="absolute left-8 bottom-8 text-white">
-              {/* <h3 className="premium-serif text-2xl">Rang-e-Bagh</h3> */}
-              {/* <p className="text-sm text-gray-200">Intricate florals & regal motifs.</p> */}
-              {/* <button className="mt-4 px-4 py-2 bg-ivory text-rose-900 rounded">Discover</button> */}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* <InstagramFeed /> */}
 
       {/* Testimonials */}
       <section className="py-16 bg-white">

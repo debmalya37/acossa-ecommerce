@@ -94,7 +94,7 @@ const Header = () => {
               <img 
                 src="/assets/images/logo/acossa.jpg" 
                 alt="ACOSSA ENTERPRISE" 
-                className="h-12 md:h-16 w-auto object-cover"
+                className="h-20 md:h-28 w-auto object-contain"
                 onError={(e: any) => {
                    // Fallback if image is missing during preview
                    e.target.style.display = 'none';

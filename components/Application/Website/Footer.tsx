@@ -33,7 +33,7 @@ const Footer = () => {
 
         {/* BRAND */}
         <div>
-          <h2 className="text-3xl font-bold tracking-wide">ACOSAA</h2>
+          <h2 className="text-3xl font-bold tracking-wide">ACOSSA</h2>
           <p className="mt-3 text-sm text-rose-100 leading-relaxed max-w-xs">
             Handcrafted designer sarees & bridal couture — curated with elegance 
             and rooted in India’s textile heritage.

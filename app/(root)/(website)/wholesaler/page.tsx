@@ -42,12 +42,12 @@ export default function WholesalePage() {
       <div className="relative h-[60vh] min-h-[400px] w-full bg-gray-900 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img 
+          {/* <img 
             src="/assets/images/hero/4.png" 
             alt="Saree Wholesale Background" 
             className="w-full h-full object-cover opacity-60"
-          />
-          <div className="absolute inset-0 bg-black/40" /> {/* Dark overlay */}
+          /> */}
+          <div className="absolute inset-0 bg-rose-900" /> {/* Dark overlay */}
         </div>
 
         {/* Hero Content */}

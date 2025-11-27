@@ -63,20 +63,31 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
       {/* Top Bar */}
-      <div className="bg-black text-white text-xs py-2 px-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <p className="hidden md:block">Free Shipping on Orders Above ₹2,999 | Handcrafted in India</p>
-          <p className="md:hidden">Free Shipping Above ₹2,999</p>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-gray-300">Track Order</a>
-            <span>|</span>
-            <a href="#" className="hover:text-gray-300">Store Locator</a>
-          </div>
+      {/* TOP MARQUEE BAR */}
+<div className="bg-black text-white text-xs py-2 overflow-hidden">
+  <div className="relative w-full">
+    {/* Marquee Track */}
+    <div className="flex w-max animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
+      
+      {/* ✅ DUPLICATED CONTENT (required for seamless loop) */}
+      {[1, 2].map((_, i) => (
+        <div key={i} className="flex items-center gap-10 px-10">
+          <span>Global Shipping Available</span>
+          <span>|</span>
+          <span>Handcrafted in India</span>
+          <span>|</span>
+          <a href="#" className="hover:text-gray-300">Track Order</a>
+          <span>|</span>
+          <a href="#" className="hover:text-gray-300">Store Locator</a>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</div>
+
 
       {/* Main Header */}
-      <div className="px-4 py-4">
+      <div className="px-4 py-2">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Mobile Menu Button */}
           <button 

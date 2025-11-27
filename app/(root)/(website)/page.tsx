@@ -10,6 +10,7 @@ import axios from "axios";
 import Link from "next/link";
 import { PRODUCT_DETAILS } from "@/routes/WebsiteRoute";
 import InstagramFeed from "@/components/Instagram";
+import Image from "next/image";
 
 
 /**
@@ -109,8 +110,8 @@ const heroSlides = [
     subtitle: "Timeless · Handcrafted · Heirloom",
     description:
       "Curated bridal sarees and lehengas with exquisite zardozi, kundan and threadwork.",
-    image:
-      "/assets/images/hero/1.png",
+    image: "/assets/images/hero/1.png",
+    mobileImage: "/assets/images/hero/hero-mobile-1.png",
     cta: "Explore Bridal",
   },
   {
@@ -118,8 +119,8 @@ const heroSlides = [
     subtitle: "Festive · Statement · Luxe",
     description:
       "Statement lehengas for your grand celebrations — craftsmanship that lasts.",
-    image:
-      "/assets/images/hero/2.png",
+    image: "/assets/images/hero/2.png",
+    mobileImage: "/assets/images/hero/hero-mobile-2.png",
     cta: "Shop Lehengas",
   },
   {
@@ -127,8 +128,8 @@ const heroSlides = [
     subtitle: "Modern Drapes, Heritage Weaves",
     description:
       "Contemporary silhouettes with rich handwork and regal fabrics for special moments.",
-    image:
-      "/assets/images/hero/3.png",
+    image: "/assets/images/hero/3.png",
+    mobileImage: "/assets/images/hero/hero-mobile-3.png",
     cta: "Discover Sarees",
   },
   {
@@ -136,8 +137,8 @@ const heroSlides = [
     subtitle: "Modern Drapes, Heritage Weaves",
     description:
       "Contemporary silhouettes with rich handwork and regal fabrics for special moments.",
-    image:
-      "/assets/images/hero/4.png",
+    image: "/assets/images/hero/4.png",
+    mobileImage: "/assets/images/hero/hero-mobile-4.png",
     cta: "Discover Sarees",
   },
   {
@@ -145,11 +146,12 @@ const heroSlides = [
     subtitle: "Modern Drapes, Heritage Weaves",
     description:
       "Contemporary silhouettes with rich handwork and regal fabrics for special moments.",
-    image:
-      "/assets/images/hero/5.png",
+    image: "/assets/images/hero/5.png",
+    mobileImage: "/assets/images/hero/hero-mobile-1.png",
     cta: "Discover Sarees",
   },
 ];
+
 
 const categories = [
   { name: "Sarees", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=900&q=80", count: "170+" },
@@ -219,7 +221,7 @@ const [categories, setCategories] = useState<any[]>([]);
 
 
   return (
-    <div className="min-h-screen bg-rose-50 text-gray-800 font-sans">
+    <div className="min-h-screen bg-rose-50 text-gray-800 font-sans mt-30">
       {/* import premium font + small css fallback */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;600;700&display=swap');
@@ -256,40 +258,97 @@ const [categories, setCategories] = useState<any[]>([]);
       </header> */}
 
       {/* HERO */}
-      <section className="relative h-[60vh] lg:h-[72vh] overflow-hidden">
-        {heroSlides.map((slide, idx) => (
-          <div
-            key={idx}
-            className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"}`}
-            aria-hidden={idx !== currentSlide}
-          >
-            <img src={slide.image} alt={slide.title} className="w-full h-full object-cover brightness-90" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/15" />
-            <div className="absolute inset-0 flex items-center">
-              <div className="max-w-6xl mx-auto px-8 md:px-12 text-white">
-                <div className="max-w-xl">
-                  {/* <p className="uppercase tracking-widest text-sm text-rose-300 mb-2">{slide.subtitle}</p> */}
-                  {/* <h1 className="premium-serif text-4xl lg:text-6xl leading-tight font-extrabold drop-shadow-sm">{slide.title}</h1> */}
-                  <OrnateDivider />
-                  {/* <p className="text-lg text-gray-100 mb-6">{slide.description}</p> */}
-                  <div className="flex gap-3">
-                    {/* <button className="px-6 py-3 bg-ivory text-rose-900 rounded-md font-semibold hover:shadow-lg transition"> {slide.cta} </button> */}
-                    <button className="px-6 py-3 border border-white/30 text-white rounded-md hover:bg-white/10 transition"><Link href='/shop'>Explore More</Link></button>
-                  </div>
-                </div>
+
+
+<section className="relative h-[60vh] lg:h-[72vh] overflow-hidden">
+  {heroSlides.map((slide, idx) => {
+    const isActive = idx === currentSlide;
+    const isLCP = idx === 0; // ✅ ONLY first slide is LCP
+
+    return (
+      <div
+        key={idx}
+        className={`absolute inset-0 transition-opacity duration-1000 ${
+          isActive ? "opacity-100 z-10" : "opacity-0 z-0"
+        }`}
+        aria-hidden={!isActive}
+      >
+        {/* ✅ MOBILE IMAGE */}
+        <div className="lg:hidden absolute inset-0">
+          <Image
+            src={slide.mobileImage}
+            alt={slide.title}
+            fill
+            priority={isLCP}
+            fetchPriority={isLCP ? "high" : "auto"}
+            sizes="100vw"
+            className="object-cover brightness-90"
+            placeholder="blur"
+            blurDataURL="/assets/images/hero/blur-placeholder.png"
+          />
+        </div>
+
+        {/* ✅ DESKTOP IMAGE */}
+        <div className="hidden lg:block absolute inset-0">
+          <Image
+            src={slide.image}
+            alt={slide.title}
+            fill
+            priority={isLCP}
+            fetchPriority={isLCP ? "high" : "auto"}
+            sizes="100vw"
+            className="object-cover brightness-90"
+            placeholder="blur"
+            blurDataURL="/assets/images/hero/blur-placeholder.png"
+          />
+        </div>
+
+        {/* ✅ OVERLAY */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/15" />
+
+        {/* ✅ CONTENT */}
+        <div className="absolute inset-0 flex items-center">
+          <div className="max-w-6xl mx-auto px-6 lg:px-12 text-white">
+            <div className="max-w-xl">
+              <OrnateDivider />
+
+              <div className="flex gap-3 mt-4">
+                <Link
+                  href="/shop"
+                  className="px-6 py-3 border border-white/30 text-white rounded-md backdrop-blur-sm hover:bg-white/10 transition"
+                >
+                  Explore More
+                </Link>
               </div>
             </div>
           </div>
-        ))}
+        </div>
+      </div>
+    );
+  })}
 
-        {/* nav */}
-        <button onClick={() => setCurrentSlide((s) => (s - 1 + heroSlides.length) % heroSlides.length)} className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/20 text-white p-3 rounded-full z-20 hover:bg-white/30">
-          <ChevronLeft />
-        </button>
-        <button onClick={() => setCurrentSlide((s) => (s + 1) % heroSlides.length)} className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 text-white p-3 rounded-full z-20 hover:bg-white/30">
-          <ChevronRight />
-        </button>
-      </section>
+  {/* ✅ NAV BUTTONS */}
+  <button
+    aria-label="Previous Slide"
+    onClick={() =>
+      setCurrentSlide((s) => (s - 1 + heroSlides.length) % heroSlides.length)
+    }
+    className="absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 bg-white/20 text-white p-3 rounded-full z-20 hover:bg-white/30"
+  >
+    <ChevronLeft />
+  </button>
+
+  <button
+    aria-label="Next Slide"
+    onClick={() =>
+      setCurrentSlide((s) => (s + 1) % heroSlides.length)
+    }
+    className="absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 bg-white/20 text-white p-3 rounded-full z-20 hover:bg-white/30"
+  >
+    <ChevronRight />
+  </button>
+</section>
+
 
 {/* =============================
     PROMO BANNER SECTION
@@ -372,7 +431,7 @@ const [categories, setCategories] = useState<any[]>([]);
       {/* Left Image */}
       <div className="rounded-lg overflow-hidden">
         <img
-          src="https://www.shutterstock.com/image-photo/young-women-wearing-red-saree-260nw-1289174437.jpg"
+          src="/assets/images/solid.png"
           alt="Simply Solids"
           className="w-full h-full object-cover"
         />
@@ -381,7 +440,7 @@ const [categories, setCategories] = useState<any[]>([]);
       {/* Right Content */}
       <div className="flex flex-col justify-center text-gray-800 px-4 md:px-8">
         <h2 className="premium-serif text-4xl md:text-5xl font-semibold text-emerald-900">
-          Simply Solids
+          Shop Glam Look
         </h2>
 
         {/* Decorative Line */}
@@ -391,13 +450,13 @@ const [categories, setCategories] = useState<any[]>([]);
         </div>
 
         <p className="text-gray-700 text-base md:text-lg max-w-md mb-6 leading-relaxed">
-          Fine embroidery and intricate threadwork redefine simplicity with
-          heritage-inspired elegance.
+          Experience elegance in every piece, created to flatter and shine. Make every occasion unforgettable with our handpicked collection made for moments that matter.
+
         </p>
 
-        <button className="inline-block bg-emerald-800 text-white px-6 py-3 rounded-md text-sm font-semibold tracking-wide hover:bg-emerald-900 transition">
+        <Link href="/shop" className="inline-block text-center bg-emerald-800 text-white px-6 py-3 rounded-md text-sm font-semibold tracking-wide hover:bg-emerald-900 transition">
           EXPLORE NOW
-        </button>
+        </Link>
       </div>
     </div>
 
@@ -407,7 +466,7 @@ const [categories, setCategories] = useState<any[]>([]);
       {/* Left Image */}
       <div className="rounded-lg overflow-hidden">
         <img
-          src="https://www.shutterstock.com/image-photo/young-women-wearing-red-saree-260nw-1289174437.jpg"
+          src="/assets/images/ink.png"
           alt="Gypsy Ink"
           className="w-full h-full object-cover"
         />
@@ -416,7 +475,8 @@ const [categories, setCategories] = useState<any[]>([]);
       {/* Right Content */}
       <div className="flex flex-col justify-center text-gray-800 px-4 md:px-8">
         <h2 className="premium-serif text-4xl md:text-5xl font-semibold text-rose-900">
-          GYPSY INK
+          Simply Royal
+
         </h2>
 
         {/* Decorative Line */}
@@ -426,13 +486,12 @@ const [categories, setCategories] = useState<any[]>([]);
         </div>
 
         <p className="text-gray-700 text-base md:text-lg max-w-md mb-6 leading-relaxed">
-          A bohemian-inspired collection with eclectic prints and earthy hues
-          for a playful yet sophisticated touch.
+          Step into a world of quiet royalty with designs that feel timeless and fresh. Crafted in India with love and tradition, each piece brings modern style to classic heritage.
         </p>
 
-        <button className="inline-block bg-rose-800 text-white px-6 py-3 rounded-md text-sm font-semibold tracking-wide hover:bg-rose-900 transition">
+        <Link href='/shop' className="inline-block bg-rose-800 text-center text-white px-6 py-3 rounded-md text-sm font-semibold tracking-wide hover:bg-rose-900 transition">
           EXPLORE NOW
-        </button>
+        </Link>
       </div>
     </div>
 
@@ -533,7 +592,7 @@ const [categories, setCategories] = useState<any[]>([]);
           <OrnateDivider />
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-            {premium.map((p:any) => (
+            {premium.slice(0, 4).map((p:any) => (
               <article
                 key={p._id}
                 className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:-translate-y-1 transition"

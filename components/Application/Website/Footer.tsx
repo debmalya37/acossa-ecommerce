@@ -18,16 +18,28 @@ const Footer = () => {
     <footer className="relative bg-rose-900 text-white pt-12 pb-6 overflow-hidden">
       
       {/* --- BACKGROUND IMAGE --- */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="/assets/images/footer-bg-2.png" 
-          alt="Footer Pattern" 
-          className="w-full h-full object-cover object-bottom opacity-100"
-          onError={(e: any) => e.target.style.display = 'none'} 
-        />
-        {/* Optional overlay to ensure text readability if the image is too bright */}
-        <div className="absolute inset-0 bg-rose-900/10" /> 
-      </div>
+      {/* --- BACKGROUND IMAGE --- */}
+<div className="absolute inset-0 z-0">
+  {/* Desktop Background */}
+  <img
+    src="/assets/images/footer-bg-2.png"
+    alt="Footer Background Desktop"
+    className="hidden md:block w-full h-full object-cover object-bottom"
+    onError={(e: any) => (e.currentTarget.style.display = "none")}
+  />
+
+  {/* Mobile Background */}
+  <img
+    src="/assets/images/footer-bg-mobile-2.png"
+    alt="Footer Background Mobile"
+    className="block md:hidden w-full h-full object-cover object-bottom"
+    onError={(e: any) => (e.currentTarget.style.display = "none")}
+  />
+
+  {/* Optional overlay for readability */}
+  <div className="absolute inset-0 bg-rose-900/20" />
+</div>
+
 
       {/* --- CONTENT (Relative z-10 to sit on top of image) --- */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
@@ -105,7 +117,7 @@ const Footer = () => {
       </div>
 
       {/* BOTTOM BAR */}
-      <div className="relative z-10 mt-12 border-t border-rose-800/50 pt-6">
+      <div className="relative z-10 mt-12 border-t border-rose-800/50 text-white pt-6  bg-gray-950/20">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-rose-200/80 gap-2 text-center text-align-center">
            <p></p>
            <span><br />

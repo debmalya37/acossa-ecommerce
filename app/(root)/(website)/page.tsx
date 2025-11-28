@@ -11,6 +11,7 @@ import Link from "next/link";
 import { PRODUCT_DETAILS } from "@/routes/WebsiteRoute";
 import InstagramFeed from "@/components/Instagram";
 import Image from "next/image";
+import BrandPromises from "@/components/Home/BrandPromises";
 
 
 /**
@@ -498,6 +499,7 @@ const [categories, setCategories] = useState<any[]>([]);
   </div>
 </section>
 
+<BrandPromises />
 {/* ========================================
     NEW CATALOGUE SECTION (Slider + Text)
    ======================================== */}

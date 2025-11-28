@@ -25,6 +25,36 @@ import { showToast } from '@/lib/showToast';
 import { Button } from '@/components/ui/button';
 import loadingSvg from '@/public/assets/images/loading.svg';
 import ProductReview from '@/components/Application/Website/ProductReview';
+import SimilarProducts from '@/components/Application/Website/SimilarProducts';
+
+const WHAT_WE_OFFER = [
+  {
+    icon: "🚚",
+    title: "Free Worldwide Shipping",
+    desc: "No minimum order, no hidden costs.",
+  },
+  {
+    icon: "🇺🇸",
+    title: "USA Duty-Paid Service",
+    desc: "No extra customs charges for U.S. customers.",
+  },
+  {
+    icon: "🔥",
+    title: "Always On-Trend",
+    desc: "New fashion drops & trending collections regularly.",
+  },
+  {
+    icon: "⏱️",
+    title: "24/7 Customer Support",
+    desc: "We’re always here to help.",
+  },
+  {
+    icon: "🎨",
+    title: "Customisation Available",
+    desc: "Tailored to your style & size.",
+  },
+];
+
 
 const decode = (html?: string): string => {
   if (!html) return "";
@@ -73,6 +103,37 @@ interface ProductDetailsProps {
   sizes: string[];
   reviewCount: number;
 }
+
+const AccordionItem = ({
+  title,
+  content,
+}: {
+  title: string;
+  content: React.ReactNode;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border-b">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full py-4 flex justify-between items-center text-left"
+      >
+        <span className="tracking-widest text-sm font-medium uppercase">
+          {title}
+        </span>
+        <span className="text-xl">{open ? "−" : "+"}</span>
+      </button>
+
+      {open && (
+        <div className="pb-4 text-sm text-gray-700 leading-relaxed">
+          {content}
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({product, variant, colors, sizes, reviewCount,}) => {
     const {slug}= useParams<{ slug: string }>();
@@ -271,20 +332,85 @@ console.log("cart now =", cart);
       </div>
       </div>
 
+{/* ================= WHAT WE OFFER ================= */}
+<div className="my-20">
+  <h2 className="text-2xl font-semibold mb-8 flex items-center gap-2">
+    ✨ What We Offer
+  </h2>
 
-      <div className="mb-20">
-        <div className="shadow rounded border">
-          <div className='p-3 bg-gray-50 border-b'>
-            <h2 className='font-semibold'>Product Description</h2>
-          </div>
-          <div className='p-3'>
-
-          <div dangerouslySetInnerHTML={{__html: decode(product.description)}}></div>
-          </div>
-        </div>
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    {WHAT_WE_OFFER.map((item, i) => (
+      <div
+        key={i}
+        className="bg-gray-50 rounded-lg p-5 text-center hover:shadow-md transition"
+      >
+        <div className="text-2xl mb-2">{item.icon}</div>
+        <h4 className="text-sm font-semibold mb-2">{item.title}</h4>
+        <p className="text-xs text-gray-600">{item.desc}</p>
       </div>
+    ))}
+  </div>
+</div>
+
+
+      {/* ================= PRODUCT DETAILS ACCORDION ================= */}
+<div className="mb-20 bg-[#faf3e8] rounded-lg px-5">
+  <AccordionItem
+    title="Description"
+    content={
+      <div dangerouslySetInnerHTML={{ __html: decode(product.description) }} />
+    }
+  />
+
+  <AccordionItem
+    title="Components"
+    content={<p>Saree / Lehenga / Blouse (as applicable)</p>}
+  />
+
+  <AccordionItem
+    title="Disclaimer"
+    content={
+      <p>
+        Product color may slightly vary due to lighting & screen resolution.
+        Handcrafted products may have slight irregularities.
+      </p>
+    }
+  />
+
+  <AccordionItem
+    title="Shipping & Return"
+    content={
+      <p>
+        Fast dispatch from Surat, India. Worldwide shipping available. Easy
+        exchange as per policy.
+      </p>
+    }
+  />
+
+  <AccordionItem
+    title="Care Instructions"
+    content={<p>Dry clean only. Store in a cool, dry place.</p>}
+  />
+
+  <AccordionItem
+    title="Help & Manufacturer Information"
+    content={
+      <div>
+        <p>Email: info@acossaenterprise.com</p>
+        <p>WhatsApp: +91 96380 00593</p>
+      </div>
+    }
+  />
+</div>
+
 
       <ProductReview productId={product._id} />
+
+      <SimilarProducts
+  category={(product as any)?.category}
+  productId={product._id}
+/>
+
 
     </div>
 

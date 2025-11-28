@@ -122,7 +122,7 @@ const Footer = () => {
            <p></p>
            <span><br />
            <p>© {new Date().getFullYear()} ACOSAA. All rights reserved.</p>Designed with ❤️ in India</span>
-           <p>Developed by ThinQit Media</p>
+           <p>Developed by <Link href='https://www.thinqit.in/'>ThinQit Media</Link></p>
         </div>
       </div>
     </footer>

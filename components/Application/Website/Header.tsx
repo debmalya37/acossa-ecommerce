@@ -72,13 +72,17 @@ const Header = () => {
       {/* ✅ DUPLICATED CONTENT (required for seamless loop) */}
       {[1, 2].map((_, i) => (
         <div key={i} className="flex items-center gap-10 px-10">
-          <span>Global Shipping Available</span>
           <span>|</span>
-          <span>Handcrafted in India</span>
+          <span>DUTY PAID SERVICE AVAILABLE IN USA</span>
           <span>|</span>
-          <a href="#" className="hover:text-gray-300">Track Order</a>
+          <span>FREE SHIPPING WORLDWIDE</span>
           <span>|</span>
-          <a href="#" className="hover:text-gray-300">Store Locator</a>
+          <span>HANDCRAFTED IN INDIA</span>
+
+          {/* <span>|</span> */}
+          {/* <a href="#" className="hover:text-gray-300">Track Order</a>
+          <span>|</span>
+          <a href="#" className="hover:text-gray-300">Store Locator</a> */}
         </div>
       ))}
     </div>
@@ -174,6 +178,12 @@ const Header = () => {
   className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >
   Wholesale
+</Link>
+            <Link
+  href="/about"
+  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
+>
+  About Us
 </Link>
           </nav>
 

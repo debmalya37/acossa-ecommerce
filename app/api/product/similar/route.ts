@@ -3,6 +3,19 @@ import { NextRequest } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import ProductModel from "@/models/Product";
 import { response, catchError } from "@/lib/helper";
+import { Types } from "mongoose";
+
+/* -----------------------------
+   Type
+----------------------------- */
+interface SimilarProduct {
+  _id: Types.ObjectId;
+  name: string;
+  slug: string;
+  mrp: number;
+  sellingPrice: number;
+  media?: { secure_url: string }[];
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -16,11 +29,11 @@ export async function GET(request: NextRequest) {
       return response(false, 400, "Exclude product id is required");
     }
 
-    // --------------------------------------------------
-    // 1️⃣ TRY SAME CATEGORY FIRST
-    // --------------------------------------------------
-    let products = [];
+    let products: SimilarProduct[] = [];
 
+    /* ----------------------------------
+       1️⃣ SAME CATEGORY FIRST
+    ---------------------------------- */
     if (category) {
       products = await ProductModel.find({
         category,
@@ -30,12 +43,12 @@ export async function GET(request: NextRequest) {
         .select("name slug media sellingPrice mrp")
         .populate("media", "secure_url")
         .limit(8)
-        .lean();
+        .lean<SimilarProduct[]>();
     }
 
-    // --------------------------------------------------
-    // 2️⃣ FALLBACK → ANY CATEGORY (IF EMPTY)
-    // --------------------------------------------------
+    /* ----------------------------------
+       2️⃣ FALLBACK → ANY CATEGORY
+    ---------------------------------- */
     if (!products.length) {
       products = await ProductModel.find({
         deletedAt: null,
@@ -44,7 +57,7 @@ export async function GET(request: NextRequest) {
         .select("name slug media sellingPrice mrp")
         .populate("media", "secure_url")
         .limit(8)
-        .lean();
+        .lean<SimilarProduct[]>();
     }
 
     return response(true, 200, "Similar products fetched", products);

@@ -56,7 +56,6 @@ const Header = () => {
     'Sarees': sareeCategories,                   // Now dynamic
     'Lehengas': ['Bridal Lehengas', 'Designer Lehengas', 'Wedding Lehengas'],
     'Suits & Sets': ['Anarkali Sets', 'Sharara Sets', 'Palazzo Sets'],
-    'Occasion': ['Wedding', 'Festive', 'Party Wear'],
     'New Arrivals': []
   };
 
@@ -173,7 +172,20 @@ const Header = () => {
                 )}
               </div>
             ))}
+            
             <Link
+  href="/shop"
+  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
+>
+  Men&apos;s Wear
+</Link>
+            <Link
+  href="/shop"
+  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
+>
+  Kids
+</Link>
+<Link
   href="/wholesaler"
   className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >

@@ -74,10 +74,10 @@ const Footer = () => {
           <h4 className="text-lg font-semibold mb-4 border-b border-rose-400/30 pb-2 inline-block">Shop</h4>
           <ul className="space-y-2 text-sm">
             <li><Link href="/shop" className="hover:text-white text-rose-100 transition-colors">All Products</Link></li>
-            <li><Link href="/category/sarees" className="hover:text-white text-rose-100 transition-colors">Sarees</Link></li>
-            <li><Link href="/category/lehengas" className="hover:text-white text-rose-100 transition-colors">Lehengas</Link></li>
-            <li><Link href="/category/gowns" className="hover:text-white text-rose-100 transition-colors">Gowns</Link></li>
-            <li><Link href="/category/suits" className="hover:text-white text-rose-100 transition-colors">Kurti & Suit Sets</Link></li>
+            <li><Link href="/shop" className="hover:text-white text-rose-100 transition-colors">Sarees</Link></li>
+            <li><Link href="/shop" className="hover:text-white text-rose-100 transition-colors">Lehengas</Link></li>
+            <li><Link href="/shop" className="hover:text-white text-rose-100 transition-colors">Gowns</Link></li>
+            <li><Link href="/shop" className="hover:text-white text-rose-100 transition-colors">Kurti & Suit Sets</Link></li>
           </ul>
         </div>
 
@@ -90,6 +90,7 @@ const Footer = () => {
             <li><Link href="/refund" className="hover:text-white text-rose-100 transition-colors">Refund Policy</Link></li>
             <li><Link href="/privacy" className="hover:text-white text-rose-100 transition-colors">Privacy Policy</Link></li>
             <li><Link href="/terms" className="hover:text-white text-rose-100 transition-colors">Terms & Conditions</Link></li>
+            <li><Link href="/cancellation" className="hover:text-white text-rose-100 transition-colors">Cancellation Policy</Link></li>
           </ul>
         </div>
 

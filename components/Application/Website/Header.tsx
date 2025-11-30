@@ -203,7 +203,6 @@ const Header = () => {
   About Us
 </Link>
           </nav>
-
           {/* Icons */}
           <div className="flex items-center gap-4">
             <button className="hover:text-rose-600 transition-colors hidden md:block">
@@ -274,7 +273,7 @@ const Header = () => {
                       : items.map((item:any) => (
                           <a 
                             key={item}
-                            href="#" 
+                            href="/shop" 
                             className="block py-2 text-sm text-gray-700 hover:text-rose-600"
                           >
                             {item}

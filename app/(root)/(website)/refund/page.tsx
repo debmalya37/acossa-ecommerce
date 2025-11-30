@@ -2,7 +2,7 @@
 
 export default function RefundPolicy() {
   return (
-    <div className="max-w-4xl mx-auto py-10 px-5">
+    <div className="max-w-4xl mx-auto py-10 px-5 mt-52">
       <h1 className="text-3xl font-bold mb-6">Refund Policy</h1>
 
       <p className="mb-4">

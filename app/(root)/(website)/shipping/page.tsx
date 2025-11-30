@@ -2,7 +2,7 @@
 
 export default function ShippingPolicy() {
   return (
-    <div className="max-w-4xl mx-auto py-12 px-5 text-gray-800 leading-relaxed">
+    <div className="max-w-4xl mx-auto py-12 px-5 text-gray-800 leading-relaxed mt-52">
       <h1 className="text-3xl font-bold mb-8">Shipping Policy</h1>
 
       {/* DELIVERY TIME */}

@@ -2,7 +2,7 @@
 
 export default function TermsPage() {
   return (
-    <div className="max-w-5xl mx-auto py-12 px-5 text-gray-800 leading-relaxed">
+    <div className="max-w-5xl mx-auto py-12 px-5 text-gray-800 leading-relaxed mt-52">
       <h1 className="text-3xl font-bold mb-8">
         Terms and Conditions — Acossa Enterprise
       </h1>

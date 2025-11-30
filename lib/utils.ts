@@ -14,3 +14,5 @@ export const sizes = [
   { label: '2XL', value: '2XL' },
   { label: 'Free Size', value: 'FS' }
 ]
+
+export const orderStatus = ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'unverified'];

@@ -172,7 +172,7 @@ const Header = () => {
               </div>
             ))}
             
-            <Link
+            {/* <Link
   href="/shop"
   className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >
@@ -183,7 +183,7 @@ const Header = () => {
   className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >
   Kids
-</Link>
+</Link> */}
 <Link
   href="/shop"
   className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
@@ -283,7 +283,7 @@ const Header = () => {
                 )}
               </div>
             ))}
-            <Link
+            {/* <Link
   href="/shop"
   className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >
@@ -294,7 +294,7 @@ const Header = () => {
   className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
 >
   Kids
-</Link>
+</Link> */}
             <Link
   href="/shop"
   className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"

@@ -122,7 +122,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-rose-200/80 gap-2 text-center text-align-center">
            <p></p>
            <span><br />
-           <p>© {new Date().getFullYear()} ACOSAA. All rights reserved.</p>Designed with ❤️ in India</span>
+           <p>© {new Date().getFullYear()} ACOSSA. All rights reserved.</p>Designed with ❤️ in India</span>
            <p>Developed by <Link href='https://www.thinqit.in/'>ThinQit Media</Link></p>
         </div>
       </div>

@@ -10,8 +10,8 @@ export const authReducer = createSlice({
         login:(state,action)=>{
             state.auth = action.payload
         },
-        logout:(state,action)=>{
-            state.auth = null
+        logout:(state) => {     // <-- FIXED ✔
+            state.auth = null;
         },
     }
 })

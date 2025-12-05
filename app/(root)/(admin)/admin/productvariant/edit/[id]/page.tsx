@@ -110,10 +110,7 @@ export default function EditProduct({ params }: EditProductPageProps) {
   }>("/api/category?deleteType=SD&&size=10000");
 
   /* Fetch product details */
-  const { data: productResponse } = useFetch<{
-    success: boolean;
-    data: ProductItem;
-  }>(`/api/product/get/${id}`);
+  const { data: productResponse } = useFetch<ProductItem>(`/api/productvariant/get/${id}`);
 
   const [categoryOption, setCategoryOption] = useState<
     { label: string; value: string }[]
@@ -146,9 +143,9 @@ export default function EditProduct({ params }: EditProductPageProps) {
      - ensure we use productResponse.data (not productResponse.data.data)
   ------------------------------------------ */
   useEffect(() => {
-  if (!productResponse?.success || !productResponse.data?.data) return;
+  if (!productResponse?.success || !productResponse.data) return;
 
-  const p = productResponse.data.data;
+  const p = productResponse.data;
 
   form.reset({
     _id: p._id,

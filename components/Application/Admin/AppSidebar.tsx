@@ -15,8 +15,8 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import Image from 'next/image'
-import logoBlack from '@/public/assets/images/logo-black.png'
-import logoWhite from '@/public/assets/images/logo-white.png'
+import logoBlack from '@/public/assets/images/logo/acossa.jpg'
+import logoWhite from '@/public/assets/images/logo/acossa.jpg'
 import { Button } from '@/components/ui/button'
 import IoMdClose, { IoMdCloseCircle } from 'react-icons/io'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'

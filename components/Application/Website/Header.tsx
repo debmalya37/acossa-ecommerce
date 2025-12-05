@@ -209,7 +209,9 @@ const Header = () => {
               <Search size={20} />
             </button>
             <button className="hover:text-rose-600 transition-colors">
+              <Link href="/my-account">
               <User size={20} />
+              </Link>
             </button>
             <button className="hover:text-rose-600 transition-colors">
               <Heart size={20} />

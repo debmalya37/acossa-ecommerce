@@ -90,6 +90,66 @@ export const DT_REVIEWS_COLUMN: MRT_ColumnDef<any>[] = [
     header: "Review",
   },
 ];
+export const DT_ORDER_COLUMN: MRT_ColumnDef<any>[] = [
+  {
+    accessorKey: "order_id",
+    header: "Order ID",
+  },
+  {
+    accessorKey: "payment_id",
+    header: "Payment ID",
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "phone",
+    header: "Phone",
+  },
+  {
+    accessorKey: "country",
+    header: "Country",
+  },
+  {
+    accessorKey: "state",
+    header: "State",
+  },
+  {
+    accessorKey: "city",
+    header: "City",
+  },
+  {
+    accessorKey: "pinCode",
+    header: "Pincode",
+  },
+  {
+    accessorKey: "totalItem",
+    header: "Total Item",
+    Cell: ({ renderedCellValue, row }) => (
+      <span>{row?.original?.products?.length ?? 0}</span>
+    )
+  },
+  {    accessorKey: "subtotal",
+    header: "Subtotal",
+  },
+  {    accessorKey: "discount",
+    header: "Discount",
+  },
+  {    accessorKey: "couponDiscountAmount",
+    header: "Coupon Discount",
+  },
+  {    accessorKey: "totalAmount",
+    header: "Total Amount",
+  },
+  {    accessorKey: "status",
+    header: "Status",
+  },
+];
 
 /* ---------------------------
    COUPON COLUMNS

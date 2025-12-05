@@ -34,6 +34,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   }
 
   const getProduct = await res.json();
+  console.log("GET PRODUCT RESPONSE:", getProduct);
 
   if (!getProduct.success) {
     return (
@@ -50,6 +51,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
       colors={getProduct?.data?.colors}
       sizes={getProduct?.data?.sizes}
       reviewCount={getProduct?.data?.reviewCount}
+      addons={getProduct?.data?.addons}
     />
   );
 }

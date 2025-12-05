@@ -95,6 +95,22 @@ interface Product {
   slug: string;
   description?: string;
 }
+interface AddonOption {
+  value: string;
+  label: string;
+  price: number;
+}
+
+interface ProductAddon {
+  _id: string;
+  key: string;
+  label: string;
+  type: "checkbox" | "radio" | "select";
+  basePrice: number;
+  required: boolean;
+  options?: AddonOption[];
+}
+
 
 interface ProductDetailsProps {
   product: Product;
@@ -102,6 +118,7 @@ interface ProductDetailsProps {
   colors: string[];
   sizes: string[];
   reviewCount: number;
+  addons?: ProductAddon[];
 }
 
 const AccordionItem = ({
@@ -135,12 +152,12 @@ const AccordionItem = ({
 };
 
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({product, variant, colors, sizes, reviewCount,}) => {
+const ProductDetails: React.FC<ProductDetailsProps> = ({product, variant, colors, sizes, reviewCount, addons}) => {
     const {slug}= useParams<{ slug: string }>();
     const [activeThumb, setActiveThumb] = useState<string | undefined>();
     const [qty, setQty] = useState<number>(1);
     const [isAddedIntoCart, setIsAddedIntoCart] = useState<boolean>(false);
-
+    const [selectedAddons, setSelectedAddons] = useState<Record<string, any>>({});
     const [isProductLoading, setIsProductLoading] = useState<boolean>(false);
 
 
@@ -149,7 +166,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({product, variant, colors
 
     console.log("here is the product", product)
     console.log("here is the variant", variant)
-
+    console.log("here are the addons", addons);
 
     useEffect (() => {
       setActiveThumb(variant?.media[0].secure_url || product?.media[0].secure_url);
@@ -185,27 +202,56 @@ useEffect(() => {
       }
     }
 
-    const handleAddToCart = () => {
-      // Add to cart functionality here
-      const cartProduct = {
-        productId: product._id,
-        variantId: variant._id,
-        name: product.name,
-        color: variant.color,
-        size: variant.size,
-        mrp: variant.mrp,
-        sellingPrice: variant.sellingPrice,
-        media: variant?.media[0]?.secure_url,
-        qty: qty,
-      }
+    const getAddonTotal = () => {
+  return Object.values(selectedAddons).reduce((sum: number, addon: any) => {
+    if (!addon) return sum;
 
-      dispatch(addIntoCart(cartProduct));
-      setIsAddedIntoCart(true);
-      showToast('success', 'Product added to cart successfully');
-      console.log("Adding to cart:", cartProduct);
+    let addonPrice = addon.basePrice || 0;
+
+    if (addon.option) {
+      addonPrice += addon.option.price || 0;
     }
 
+    return sum + addonPrice;
+  }, 0);
+};
+
+const finalPrice =
+  (variant.sellingPrice * qty) + getAddonTotal();
+
+
+
+    const handleAddToCart = () => {
+  const cartProduct = {
+    productId: product._id,
+    variantId: variant._id,
+    name: product.name,
+    color: variant.color,
+    size: variant.size,
+    mrp: variant.mrp,
+    sellingPrice: variant.sellingPrice,
+    media: variant?.media[0]?.secure_url,
+    qty,
+
+    addons: Object.entries(selectedAddons).map(([key, addon]: any) => ({
+      key,
+      basePrice: addon.basePrice,
+      option: addon.option || null,
+    })),
+
+    finalPrice,
+  };
+
+  dispatch(addIntoCart(cartProduct));
+  setIsAddedIntoCart(true);
+  showToast("success", "Product added to cart successfully");
+  console.log("Added to cart:", cartProduct);
+};
+
+
     const cart = useSelector((state:any) => state.cartStore);
+
+    
 console.log("cart now =", cart);
   return (
     <div className='mt-50 lg:px-32 px-4'>
@@ -306,6 +352,106 @@ console.log("cart now =", cart);
           ))}
         </div>
     </div>
+
+    {/* ================= PRODUCT ADDONS ================= */}
+{/* ================= PRODUCT ADDONS ================= */}
+{addons && addons.length > 0 && (
+  <div className="mt-8">
+    <h3 className="font-semibold mb-4">Add-ons</h3>
+
+    <div className="space-y-4">
+      {addons.map((addon: ProductAddon) => (
+        <div key={addon._id} className="border rounded-lg p-4">
+          
+          <div className="flex justify-between items-center mb-3">
+            <p className="font-medium">{addon.label}</p>
+            {addon.basePrice > 0 && (
+              <span className="text-sm font-semibold">
+                +{addon.basePrice.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </span>
+            )}
+          </div>
+
+          {/* CHECKBOX */}
+          {addon.type === "checkbox" && (
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!!selectedAddons[addon.key]}
+                onChange={(e) =>
+                  setSelectedAddons((prev) => {
+                    const updated = { ...prev };
+                    if (e.target.checked) {
+                      updated[addon.key] = { basePrice: addon.basePrice };
+                    } else {
+                      delete updated[addon.key];
+                    }
+                    return updated;
+                  })
+                }
+              />
+              <span className="text-sm">Add this option</span>
+            </label>
+          )}
+
+          {/* SELECT / RADIO */}
+          {(addon.type === "select" || addon.type === "radio") &&
+            addon.options &&
+            addon.options.length > 0 && (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
+                {addon.options.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    className={`border rounded px-3 py-2 text-sm ${
+                      selectedAddons[addon.key]?.option?.value === opt.value
+                        ? "bg-primary text-white"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      setSelectedAddons((prev) => ({
+                        ...prev,
+                        [addon.key]: {
+                          basePrice: addon.basePrice,
+                          option: opt,
+                        },
+                      }))
+                    }
+                  >
+                    {opt.label}
+                    {opt.price > 0 && (
+                      <span className="block text-xs">
+                        +{opt.price.toLocaleString("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        })}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+
+<div className="text-xl font-semibold mt-4">
+  Total:
+  <span className="ml-2">
+    {finalPrice.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    })}
+  </span>
+</div>
+
+
 
     <div className="mt-5"><p className="font-bold mb-2">Quantity</p>
     <div className="flex items-center h-10 border w-fit rounded-full ">

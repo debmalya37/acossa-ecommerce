@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import useFetch from '@/hooks/useFetch';
 import { showToast } from '@/lib/showToast';
 import zodSchema from '@/lib/zodSchema';
-import { PRODUCT_DETAILS } from '@/routes/WebsiteRoute';
+import { PRODUCT_DETAILS, WEBSITE_ORDER_DETAILS } from '@/routes/WebsiteRoute';
 import { addIntoCart, clearCart } from '@/store/reducer/cartReducer';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -20,10 +20,22 @@ import { IoCloseCircleOutline } from 'react-icons/io5';
 import { FaShippingFast } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux'
-import z from 'zod';
+import z, { success } from 'zod';
 import { Textarea } from '@/components/ui/textarea';
+import Script from 'next/script';
+import { useRouter } from 'next/navigation';
+import Loading from '@/components/Application/Loading';
+// import Razorpay from 'razorpay';
+// import Razorpay from 'razorpay';
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 interface VerifiedCartItem {
+  productId: string;
   variantId: string;
   name: string;
   media: string;
@@ -33,7 +45,22 @@ interface VerifiedCartItem {
   qty: number;
   mrp: number;
   sellingPrice: number;
+
+  addons?: {
+    key: string;
+    label: string;
+    basePrice: number;
+    option?: {
+      value: string;
+      label: string;
+      price: number;
+    } | null;
+    totalPrice: number;
+  }[];
+
+  finalPrice: number; // ✅ IMPORTANT
 }
+
 
 interface VerifiedCartResponse {
   success: boolean;
@@ -42,8 +69,9 @@ interface VerifiedCartResponse {
 
 
 const CheckoutPage = () => {
+  const router = useRouter();
   const cart = useSelector((store:any) => store.cartStore);
-  const auth = useSelector((store:any) => store.authStore);
+  const authStore = useSelector((store:any) => store.authStore);
   const dispatch = useDispatch();
 const [verifiedCartData, setVerifiedCartData] = useState<VerifiedCartItem[]>([]);
 
@@ -62,6 +90,7 @@ const [verifiedCartData, setVerifiedCartData] = useState<VerifiedCartItem[]>([])
  const [totalAmount, setTotalAmount] = useState(0);
  const [couponCode, setCouponCode] = useState('');
  const [placingOrder, setPlacingOrder] = useState(false);
+ const [savingOrder, setSavingOrder] = useState(false);
 
 
   console.log("verifiedCartData", getVerifiedCartData);
@@ -72,7 +101,8 @@ const [verifiedCartData, setVerifiedCartData] = useState<VerifiedCartItem[]>([])
 
     setVerifiedCartData(cartItems); // ✓ now correct
 
-    dispatch(clearCart([]));
+    dispatch(clearCart());
+
 
     cartItems.forEach((item) => {
       dispatch(addIntoCart(item));
@@ -85,9 +115,11 @@ const [verifiedCartData, setVerifiedCartData] = useState<VerifiedCartItem[]>([])
 
   useEffect(()=> {
           const cartProducts = cart.products;
-          const subtotalAmount = cartProducts.reduce((total: number, product: any) => {
-              return total + (product.sellingPrice * product.qty);
-          }, 0);
+          const subtotalAmount = cartProducts.reduce(
+  (total: number, product: any) => total + product.finalPrice,
+  0
+);
+
           const discount = cartProducts.reduce((total: number, product: any) => {
               return total + ((product.mrp - product.sellingPrice) * product.qty);
           }, 0);
@@ -110,8 +142,9 @@ const [verifiedCartData, setVerifiedCartData] = useState<VerifiedCartItem[]>([])
       code: '',
       minShoppingAmount: Subtotal,
     }
-
   })
+
+
 
   const applyCoupon =  async (values: { code: string; minShoppingAmount: number }) => {
     setCouponLoading(true);
@@ -174,22 +207,128 @@ const [verifiedCartData, setVerifiedCartData] = useState<VerifiedCartItem[]>([])
       pinCode: '',
       landmark: '',
       orderNote: '',
-      userId: auth?._id,
+      userId: authStore.auth?._id,
     }
 
   })
+
+  useEffect(() => {
+    if(authStore) {
+      OrderForm.setValue("userId", authStore?.auth?._id);
+    }
+  }, [authStore]);
+
+
+
+  const getOrderId = async (amount:any) => {
+    try {
+      const {data: orderIdData} = await axios.post('/api/payment/get-order-id', 
+        {amount})
+
+        if(!orderIdData.success) {
+          throw new Error (orderIdData.message || 'Failed to get order id');
+        }
+        return {success: true, order_id: orderIdData.data.order_id};
+    } catch (error:any) {
+      return {success: false, message: error.message};
+    }
+  }
 
 const placeOrder = async (formData:any) => {
   console.log("placing order form data:", formData)
   setPlacingOrder(true);
   try {
-    
+    const generatedOrderId = await getOrderId(totalAmount); // amount in cents
+    console.log("generated order id:", generatedOrderId);
+    if(!generatedOrderId.success) {
+      throw new Error(generatedOrderId.message || 'Failed to generate order id');
+    }
+
+    const order_id = generatedOrderId.order_id;
+
+    const razOption = {
+       "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "", // Enter the Key ID generated from the Dashboard
+    "amount": totalAmount * 100, // Amount is in currency subunits. 
+    "currency": "USD",
+    "name": "Acossa Enterprise", //your business name
+    "description": "Payment for the order",
+    "image": "https://acossaenterprise.com/assets/images/logo/acossa.jpg",
+    "order_id": order_id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": async function (response:any){
+      setSavingOrder(true);
+        const products = verifiedCartData.map((cartItem) => ({
+  productId: cartItem.productId,
+  variantId: cartItem.variantId,
+  name: cartItem.name,
+  qty: cartItem.qty,
+  mrp: cartItem.mrp,
+  sellingPrice: cartItem.sellingPrice,
+  addons: cartItem.addons || [],
+  finalPrice: cartItem.finalPrice,
+}));
+
+        const { data: paymentResponse } = await axios.post(
+  "/api/payment/save-order",
+  {
+    ...formData,
+
+    // Razorpay fields (EXPLICIT ✅)
+    razorpay_payment_id: response.razorpay_payment_id,
+    razorpay_order_id: response.razorpay_order_id ||  order_id,
+    razorpay_signature: response.razorpay_signature,
+
+    // Cart
+    products,
+
+    // Totals (FIXED CASE ✅)
+    subtotal: Subtotal,
+    discount: Discount,
+    couponDiscountAmount: couponDiscountAmount,
+    totalAmount: totalAmount,
+  }
+);
+
+
+        if(paymentResponse.success) {
+          showToast("success", "Order placed successfully.");
+          dispatch(clearCart());
+
+          OrderForm.reset();
+          // redirect to order success page
+          router.push(WEBSITE_ORDER_DETAILS(response.razorpay_order_id));
+          setSavingOrder(false);
+        } else {
+          showToast("error", paymentResponse.message || "Failed to place order. Please try again.");
+          setSavingOrder(false);
+        }
+
+
+    },
+    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        "name": formData.name, //your customer's name
+        "email": formData.email,
+        "contact": formData.phone //Provide the customer's phone number for better conversion rates 
+    },
+    "theme": {
+        "color": "#ec003f"
+    }
+    }
+
+    const rzp = window.Razorpay(razOption);
+    rzp.on('payment.failed', function (response:any){
+       
+        showToast("error", response.error.description);
+        
+});
+rzp.open();
+
   } catch (error: any) {
     showToast("error", error.message || "Failed to place order. Please try again.");
   }finally {
     setPlacingOrder(false);
   }
 }
+
 
 
 
@@ -203,6 +342,19 @@ const placeOrder = async (formData:any) => {
 
   return (
     <div>
+
+      {
+      savingOrder && 
+      <div className='h-screen w-screen fixed top-0 left-0 z-50 bg-black/50'>
+        <div className='h-screen justify-center items-center'>
+          <div className='flex justify-center items-center p-10 w-full flex-col gap-5'>
+
+      <h4 className='font-semibold z-50 '>Order Confirming...</h4>
+      <Loading />
+          </div>
+        </div>
+    </div> 
+    }
       {cart.count === 0 ? (
         <div className='w-screen flex justify-center items-center py-32'>
           <div className="text-center">
@@ -325,7 +477,7 @@ const placeOrder = async (formData:any) => {
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <Input type='number' placeholder='Pin Code*' {...field} />
+                              <Input type='number' placeholder='Zip Code*' {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -400,14 +552,36 @@ const placeOrder = async (formData:any) => {
                             <p>Color: {product.color}</p>
                             <p>Size: {product.size}</p>
                           </div>
+                          {product.addons && product.addons.length > 0 && (
+  <ul className="text-xs text-gray-500 mt-1">
+    {product.addons.map((addon) => (
+      <li key={addon.key}>
+        • {addon.label}
+        {addon.option?.label ? ` (${addon.option.label})` : ""}{" "}
+        {addon.totalPrice > 0 && (
+          <span className="ml-1">
+            +{addon.totalPrice.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </span>
+        )}
+      </li>
+    ))}
+  </ul>
+)}
+
                         </div>
                       </td>
                       <td className='p-3 text-center'>
                     <p className="text-nowrap text-sm">
-                      {product.qty} X {product.sellingPrice.toLocaleString('en-US',
-                        { style: 'currency', currency: 'USD' }
-                      )}
-                    </p>
+  {product.qty} ×{" "}
+  {(product.finalPrice / product.qty).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  })}
+</p>
+
                       </td>
                     </tr>
                   ))}
@@ -507,6 +681,8 @@ const placeOrder = async (formData:any) => {
           </div>
         </div>
       )}
+
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
     </div>
   );
 }

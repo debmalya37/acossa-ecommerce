@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchema } from "@/lib/validations/loginSchema";
 import Image from "next/image";
-import Logo from "@/public/assets/images/logo-black.png";
+import Logo from "@/public/assets/images/logo/acossa.jpg";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ import {
 import { Info, CheckCircle2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { WEBSITE_REGISTER } from "@/routes/WebsiteRoute";
-import { signIn } from "next-auth/react";
+
 import { useRouter } from "next/navigation";
 
 
@@ -45,16 +45,17 @@ export default function LoginPage() {
 const onSubmit = async (data: LoginSchema) => {
   setServerMessage({ type: "", message: "" });
 
-  const res = await signIn("credentials", {
-    redirect: false,
-    email: data.email,
-    password: data.password,
-  });
+  const res = await fetch("/api/auth/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+const result = await res.json();
 
-  if (res?.error) {
+  if (result?.error) {
     setServerMessage({
       type: "error",
-      message: res.error || "Invalid email or password",
+      message: result.error || "Invalid email or password",
     });
     return;
   }

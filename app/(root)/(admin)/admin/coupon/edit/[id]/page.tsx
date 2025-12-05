@@ -98,7 +98,7 @@ export default function EditCouponPage({ params }: EditCouponPageProps) {
   /* --------------------------------------
      ✔ Fetch coupon
   ----------------------------------------- */
-  const { data: couponResponse } = useFetch<FetchCouponResponse>(`/api/coupon/get/${id}`);
+  const { data: couponResponse } = useFetch<CouponItem>(`/api/coupon/get/${id}`);
 
   const [loading, setLoading] = useState(false);
 
@@ -126,9 +126,9 @@ export default function EditCouponPage({ params }: EditCouponPageProps) {
   useEffect(() => {
   // Response structure: { success, message, data: { success, data: CouponItem } }
 
-  if (!couponResponse?.success || !couponResponse.data?.data) return;
+  if (!couponResponse?.success || !couponResponse.data) return;
 
-  const c = couponResponse.data.data;
+  const c = couponResponse.data;
 
   const validityStr = c.validity
     ? dayjs(c.validity).format("YYYY-MM-DD")

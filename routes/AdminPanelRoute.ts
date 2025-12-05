@@ -41,4 +41,6 @@ export const ADMIN_CUSTOMERS_SHOW= '/admin/customers'
 
 //review routes
 export const ADMIN_REVIEWS_SHOW= '/admin/review'
-
+//order routes
+export const ADMIN_ORDERS_SHOW= '/admin/orders'
+export const ADMIN_ORDERS_DETAILS=(order_id:any)=>order_id ? `/admin/orders/details/${order_id}` : ''

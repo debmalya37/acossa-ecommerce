@@ -18,6 +18,7 @@ export interface IProductVariant extends Document {
   updatedAt: Date;
 }
 
+
 // Add this below IProductVariant interface:
 
 // When .populate("product") is used:

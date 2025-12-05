@@ -86,6 +86,13 @@ interface EditProductPageProps {
     id: string;
   };
 }
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  statusCode?: number;
+  data: T;
+}
+
 
 /* -----------------------------------------
    Breadcrumb
@@ -109,10 +116,11 @@ export default function EditProduct({ params }: EditProductPageProps) {
   }>("/api/category?deleteType=SD&&size=10000");
 
   /* Fetch product details */
-  const { data: productResponse } = useFetch<{
-    success: boolean;
-    data: ProductItem;
-  }>(`/api/product/get/${id}`);
+ const { data: productResponse } = useFetch<ProductItem>(
+  `/api/product/get/${id}`
+);
+
+
 
   const [categoryOption, setCategoryOption] = useState<
     { label: string; value: string }[]
@@ -143,24 +151,24 @@ export default function EditProduct({ params }: EditProductPageProps) {
      Load product data into form
   ------------------------------------------ */
   useEffect(() => {
-    if (!productResponse?.success || !productResponse.data?.data) return;
+  if (!productResponse?.success || !productResponse.data) return;
 
-const p = productResponse.data.data;
+  const p = productResponse.data;
 
+  form.reset({
+    _id: p._id,
+    name: p.name,
+    slug: p.slug,
+    category: p.category,
+    mrp: p.mrp,
+    sellingPrice: p.sellingPrice,
+    discountPercentage: p.discountPercentage,
+    description: p.description,
+  });
 
-    form.reset({
-      _id: p._id,
-      name: p.name,
-      slug: p.slug,
-      category: p.category,
-      mrp: p.mrp,
-      sellingPrice: p.sellingPrice,
-      discountPercentage: p.discountPercentage,
-      description: p.description,
-    });
+  setSelectedMedia(p.media || []);
+}, [productResponse, form]);
 
-    setSelectedMedia(p.media || []);
-  }, [productResponse, form]);
 
   /* -----------------------------------------
      Map category options

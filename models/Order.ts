@@ -44,34 +44,64 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    products: [{
-        productId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-            required: true,
+    products: [
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+
+    variantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ProductVariant",
+      required: true,
+    },
+
+    name: {
+      type: String,
+      required: true,
+    },
+
+    qty: {
+      type: Number,
+      required: true,
+    },
+
+    mrp: {
+      type: Number,
+      required: true,
+    },
+
+    sellingPrice: {
+      type: Number,
+      required: true,
+    },
+
+    /* ✅ ADD THIS BLOCK */
+    addons: [
+      {
+        key: { type: String, required: true },     // FALL_PICO
+        label: { type: String, required: true },   // Fall & Pico
+        basePrice: { type: Number, default: 0 },
+
+        option: {
+          value: { type: String },
+          label: { type: String },
+          price: { type: Number, default: 0 },
         },
-        variantId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Variant',
-            required: true,
-        },
-        name: {
-            type: String,
-            required: true,
-        },
-        qty: {
-            type: Number,
-            required: true,
-        },
-        mrp: {
-            type: Number,
-            required: true,
-        },
-        sellingPrice: {
-            type: Number,
-            required: true,
-        },
-    }],
+
+        totalPrice: { type: Number, required: true },
+      },
+    ],
+
+    finalPrice: {
+      type: Number,
+      required: true,
+    },
+  },
+],
+
     subtotal: {
         type: Number,
         required: true,

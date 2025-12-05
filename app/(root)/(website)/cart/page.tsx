@@ -35,8 +35,9 @@ const CartPage = () => {
     useEffect(()=> {
         const cartProducts = cart.products;
         const totalAmount = cartProducts.reduce((total:any, product:any) => {
-            return total + (product.sellingPrice * product.qty);
-        }, 0);
+  return total + (product.finalPrice ?? 0);
+}, 0);
+
         const discount = cartProducts.reduce((total:any, product:any) => {
             return total + ((product.mrp - product.sellingPrice) * product.qty);
         }, 0);
@@ -87,6 +88,17 @@ const CartPage = () => {
                                                 <p className='text-sm' >Color: {product.color}  </p>
                                                 <p className='text-sm' >Size: {product.size}  </p>
                                             </div>
+                                            {product.addons && product.addons.length > 0 && (
+  <div className="text-xs text-gray-600 mt-1 space-y-1">
+    {product.addons.map((addon: any, i: number) => (
+      <p key={i}>
+        • {addon.key}
+        {addon.option?.label ? ` (${addon.option.label})` : ""}
+      </p>
+    ))}
+  </div>
+)}
+
                                         </div>
                                     </td>
 
@@ -116,7 +128,7 @@ const CartPage = () => {
                                     <td className='md:table-cell flex justify-between md:p-3 px-3 pb-2 text-center'>
                                         <span className='md:hidden font-medium' >Total</span>
                                         <span>
-                                            {(product.sellingPrice * product.qty).toLocaleString('en-US',
+                                            {product.finalPrice.toLocaleString('en-US',
                                             { style: 'currency', currency: 'USD' }
                                         )}
                                         </span>

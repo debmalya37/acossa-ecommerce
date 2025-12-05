@@ -27,17 +27,40 @@ const CartPage = () => {
     const [discount, setDiscount] = useState(0);
     const dispatch = useDispatch();
 
-    useEffect(()=> {
-        const cartProducts = cart.products;
-        const totalAmount = cartProducts.reduce((total:any, product:any) => {
-            return total + (product.sellingPrice * product.qty);
-        }, 0);
-        const discount = cartProducts.reduce((total:any, product:any) => {
-            return total + ((product.mrp - product.sellingPrice) * product.qty);
-        }, 0);
-        setSubtotal(totalAmount);
-        setDiscount(discount);
-    }, [cart])
+
+    const getAddonTotal = (addons: any[] = []) =>
+  addons.reduce((sum, addon) => {
+    let price = addon.basePrice || 0;
+    if (addon.option) {
+      price += addon.option.price || 0;
+    }
+    return sum + price;
+  }, 0);
+
+const getProductTotal = (product: any) =>
+  (product.sellingPrice * product.qty) + getAddonTotal(product.addons);
+
+
+useEffect(() => {
+  const cartProducts = cart.products;
+
+  const subtotalAmount = cartProducts.reduce(
+    (total: number, product: any) =>
+      total + getProductTotal(product),
+    0
+  );
+
+  const discountAmount = cartProducts.reduce(
+    (total: number, product: any) =>
+      total +
+      ((product.mrp - product.sellingPrice) * product.qty),
+    0
+  );
+
+  setSubtotal(subtotalAmount);
+  setDiscount(discountAmount);
+}, [cart]);
+
     return (
         <Sheet open={open} onOpenChange={SetOpen}>
             <SheetTrigger className='relative'>
@@ -83,11 +106,53 @@ const CartPage = () => {
                                     Remove
                                 </button>
                                 
-                                <p className='font-semibold'>
-                                    {product.qty} X {product.sellingPrice.toLocaleString('en-US',
-                                        { style: 'currency', currency: 'USD' }
-                                    )}
-                                </p>
+                                <div className="space-y-1">
+  <p className="font-semibold">
+    {product.qty} ×{" "}
+    {product.sellingPrice.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    })}
+  </p>
+
+  {/* ADDONS */}
+  {product.addons?.length > 0 && (
+    <div className="text-sm text-gray-600 space-y-1">
+      {product.addons.map((addon: any) => {
+        const addonPrice =
+          addon.basePrice +
+          (addon.option?.price || 0);
+
+        return (
+          <div
+            key={addon.key}
+            className="flex justify-between"
+          >
+            <span>
+              + {addon.key.replace(/_/g, " ")}
+              {addon.option?.label && ` (${addon.option.label})`}
+            </span>
+            <span>
+              {addonPrice.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD",
+              })}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  )}
+
+  <p className="font-semibold text-primary pt-1">
+    Item Total:{" "}
+    {getProductTotal(product).toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    })}
+  </p>
+</div>
+
                             </div>
                         </div>
                     ))}

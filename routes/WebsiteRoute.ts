@@ -7,3 +7,5 @@ export interface ProductDetailsFn {
 
 export const PRODUCT_DETAILS: ProductDetailsFn = (SLUG?: string) =>
     SLUG ? `/product/${SLUG}` : "/product";
+
+export const WEBSITE_ORDER_DETAILS = (order_id:any) => `/order-details/${order_id}`

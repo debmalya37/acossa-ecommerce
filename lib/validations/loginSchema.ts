@@ -16,12 +16,6 @@ export const loginSchema = z.object({
   password: z
     .string()
     .min(1, "Password is required")
-    .min(6, "Password must be at least 6 characters long")
-    .max(100, "Password too long")
-    .regex(
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&()_+\-=]{6,}$/,
-      "Password must include letters & numbers"
-    )
     .trim(),
 })
 .strict();

@@ -16,6 +16,7 @@ import {
   DT_CATEGORY_COLUMN,
   DT_COUPON_COLUMN,
   DT_CUSTOMERS_COLUMN,
+  DT_ORDER_COLUMN,
   DT_PRODUCT_COLUMN,
   DT_PRODUCT_VARIANT_COLUMN,
   DT_REVIEWS_COLUMN,
@@ -35,7 +36,8 @@ type TrashKeys =
   | "productvariant"
   | "coupon"
   | "customers"
-  | "review";
+  | "review"
+  | "orders";
 
 interface TrashConfig {
   title: string;
@@ -95,6 +97,13 @@ const TRASH_CONFIG: Record<TrashKeys, TrashConfig> = {
     fetchUrl: "/api/review",
     exportUrl: "/api/review/export",
     deleteUrl: "/api/review/delete",
+  },
+  orders: {
+    title: "Orders Trash",
+    columns: DT_ORDER_COLUMN,
+    fetchUrl: "/api/orders",
+    exportUrl: "/api/orders/export",
+    deleteUrl: "/api/orders/delete",
   },
 };
 

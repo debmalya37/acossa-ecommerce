@@ -45,7 +45,7 @@ const onSubmit = async (data: RegisterSchema) => {
   try {
     setServerMsg({ type: "", message: "" });
 
-    const res = await fetch("/api/register", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -187,7 +187,7 @@ const onSubmit = async (data: RegisterSchema) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="customer">Customer</SelectItem>
+                        <SelectItem value="user">Customer</SelectItem>
                         <SelectItem value="admin">Admin</SelectItem>
                       </SelectContent>
                     </Select>

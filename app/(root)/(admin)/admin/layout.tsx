@@ -5,6 +5,7 @@ import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Copyright } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react'
 
 import { ReactNode } from 'react';
@@ -25,9 +26,12 @@ const layout = ({ children }: Readonly<{
             <Topbar />
             {children}
           </div>
-          <div className="border-t h-[40px] flex justify-center items-center bg-gray-50 dark:bg-background text-sm">
-            <Copyright className="h-3 w-3" /> {new Date().getFullYear()} ThiqIt. All Rights Reserved
-          </div>
+          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-rose-200/80 gap-2 text-center text-align-center">
+           <p></p>
+           <span><br />
+           <p>© {new Date().getFullYear()} ACOSSA. All rights reserved.</p>Designed with ❤️ in India</span>
+           <p>Developed by <Link href='https://www.thinqit.in/'>ThinQit Media</Link></p>
+        </div>
         </main>
       </SidebarProvider>
     </ThemeProvider>

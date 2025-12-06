@@ -7,10 +7,19 @@ import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown } from 'lucide-r
 import CartPage from "@/components/Application/Website/Cart";
 import axios from "axios";
 import Link from 'next/link';
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/store/reducer/authReducer";
+import { useRouter } from "next/navigation";
+
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+const dispatch = useDispatch();
+const router = useRouter();
+
+// ✅ read auth from redux
+const auth = useSelector((state: any) => state.authStore.auth);
 
   // ============================
   // REAL CATEGORY STATE
@@ -46,6 +55,16 @@ const Header = () => {
 
     fetchCategories();
   }, []);
+
+  const handleLogout = async () => {
+  try {
+    await axios.post("/api/auth/logout");
+    dispatch(logout());
+    router.push("/auth/login");
+  } catch (err) {
+    console.error("Logout failed", err);
+  }
+};
 
   // ============================
   // STATIC CATEGORY MENU
@@ -205,16 +224,36 @@ const Header = () => {
           </nav>
           {/* Icons */}
           <div className="flex items-center gap-4">
-            <button className="hover:text-rose-600 transition-colors hidden md:block">
-              <Search size={20} />
-            </button>
+            {/* ✅ AUTH ACTIONS */}
+  {!auth ? (
+    <>
+      <Link
+        href="/auth/login"
+        className="text-sm font-medium hover:text-rose-600 transition-colors"
+      >
+        Login
+      </Link>
+
+      <Link
+        href="/auth/register"
+        className="text-sm font-medium border px-4 py-1.5 rounded hover:bg-rose-600 hover:text-white transition-colors"
+      >
+        Sign Up
+      </Link>
+    </>
+  ) : (
+    <button
+      onClick={handleLogout}
+      className="text-sm font-medium text-red-600 hover:underline"
+    >
+      Logout
+    </button>
+  )}
+        
             <button className="hover:text-rose-600 transition-colors">
               <Link href="/my-account">
               <User size={20} />
               </Link>
-            </button>
-            <button className="hover:text-rose-600 transition-colors">
-              <Heart size={20} />
             </button>
             <CartPage />
           </div>

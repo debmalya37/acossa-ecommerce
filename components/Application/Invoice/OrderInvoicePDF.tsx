@@ -115,17 +115,17 @@ export default function OrderInvoicePDF({ order }: { order: any }) {
 
               <Text style={{ width: "20%" }}>{item.sellingPrice}</Text>
               <Text style={{ width: "20%" }}>{item.qty}</Text>
-              <Text style={{ width: "20%" }}>{item.finalPrice}</Text>
+              <Text style={{ width: "20%" }}>${item.finalPrice}</Text>
             </View>
           ))}
 
           {/* Summary */}
           <View style={{ marginTop: 10 }}>
-            <Text>Subtotal: {order.subtotal}</Text>
-            <Text>Discount: {order.discount}</Text>
-            <Text>Coupon Discount: {order.couponDiscountAmount}</Text>
+            <Text>Subtotal: ${order.subtotal}</Text>
+            <Text>Discount: ${order.discount}</Text>
+            <Text>Coupon Discount: ${order.couponDiscountAmount}</Text>
             <Text style={{ fontWeight: "bold", marginTop: 5 }}>
-              TOTAL AMOUNT: {order.totalAmount}
+              TOTAL AMOUNT: ${order.totalAmount}
             </Text>
           </View>
         </View>

@@ -132,30 +132,33 @@ const AddProduct = () => {
     console.log(selectedMedia)
 
 
-    const handleXLSXUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+   const handleXLSXUpload = async (e: ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (!file) return;
 
   try {
-    const XLSX = await import("xlsx"); // dynamic import
+    const XLSX = await import("xlsx");
 
     const data = await file.arrayBuffer();
     const workbook = XLSX.read(data);
 
-    // Sheet names must MATCH your template
+    // ✅ Sheet names MUST match Excel
     const productsSheet = workbook.Sheets["Products"];
     const variantsSheet = workbook.Sheets["Variants"];
+    const addonsSheet = workbook.Sheets["product_addons"]; // ✅ ADD THIS
 
     if (!productsSheet) return showToast("error", "Products sheet not found");
     if (!variantsSheet) return showToast("error", "Variants sheet not found");
+    if (!addonsSheet) return showToast("error", "Product Addons sheet not found");
 
     const products = XLSX.utils.sheet_to_json(productsSheet);
     const variants = XLSX.utils.sheet_to_json(variantsSheet);
+    const productAddons = XLSX.utils.sheet_to_json(addonsSheet); // ✅ ADD THIS
 
-    // Send to backend
     const { data: res } = await axios.post("/api/product/import", {
       products,
       variants,
+      productAddons, // ✅ SEND THIS
     });
 
     showToast("success", res.message);
@@ -163,6 +166,7 @@ const AddProduct = () => {
     showToast("error", error.message || "Import failed");
   }
 };
+
 
 
     const handleCSVUpload = async (e: ChangeEvent<HTMLInputElement>) => {

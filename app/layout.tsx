@@ -4,6 +4,8 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import AuthHydrator from "@/components/AuthHydrator";
 import ReduxProvider from "@/providers/ReduxProvider";
+import WhatsAppButton from "@/components/Application/Website/WhatsAppButton";
+import GoogleAnalytics from "@/components/Application/Website/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +34,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ReduxProvider>
+          <GoogleAnalytics />
         {children}
+        <WhatsAppButton />
         </ReduxProvider>
       </body>
     </html>

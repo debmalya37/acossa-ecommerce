@@ -1,6 +1,7 @@
 import React from 'react'
 import UserPanelNavigation from './UserPanelNavigation'
 
+
 interface UserPanelLayoutProps {
   children: React.ReactNode;
 }
@@ -13,7 +14,9 @@ const UserPanelLayout: React.FC<UserPanelLayoutProps> = ({ children }) => {
       </div>
 
       <div className="lg:w-[calc(100%-16rem)] w-full">
+        
         {children}
+        
       </div>
     </div>
   )

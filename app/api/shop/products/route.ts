@@ -4,7 +4,12 @@ import dbConnect from "@/lib/dbConnect";
 import ProductModel from "@/models/Product";
 import ProductVariantModel from "@/models/Productvariant";
 import CategoryModel from "@/models/Category";
-import MediaModel from "@/models/Media";
+import "@/models/Media";
+import "@/models/Category";
+import "@/models/Productvariant";
+import "@/models/ProductAddon";
+import "@/models/User";
+import "@/models/Review";
 
 export async function GET(req: NextRequest) {
   try {

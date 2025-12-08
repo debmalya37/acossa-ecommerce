@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import ProductModel from "@/models/Product";
+import "@/models/Media";
+import "@/models/Category";
+import "@/models/Productvariant";
+import "@/models/ProductAddon";
+import "@/models/User";
+import "@/models/Review";
 
 export async function GET() {
   try {

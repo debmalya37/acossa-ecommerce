@@ -3,7 +3,12 @@ import dbConnect from "@/lib/dbConnect";
 import { catchError } from "@/lib/helper";
 import ProductModel from "@/models/Product";
 import { PipelineStage } from "mongoose";   // ✅ IMPORTANT
-
+import "@/models/Media";
+import "@/models/Category";
+import "@/models/Productvariant";
+import "@/models/ProductAddon";
+import "@/models/User";
+import "@/models/Review";
 interface MRTFilter {
   id: string;
   value: string;

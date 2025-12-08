@@ -22,6 +22,7 @@ import axios from "axios";
 import slugify from "slugify";
 import useFetch from "@/hooks/useFetch";
 import { z } from "zod";
+import { useParams } from "next/navigation";
 
 /* ---------------- Schema ---------------- */
 const updateCategorySchema = zodSchema.pick({
@@ -45,9 +46,10 @@ interface Category {
   slug: string;
 }
 
-const EditCategory = ({ params }: EditCategoryPageProps) => {
+const EditCategory = () => {
 
-  const id = params.id;
+  const params = useParams();
+  const id = params.id as string;
 
   // Fetch category by ID
   const { data: categoryData } = useFetch<Category>(`/api/category/${id}`)

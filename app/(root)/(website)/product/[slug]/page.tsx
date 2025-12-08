@@ -1,15 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import ProductDetails from "../ProductDetails";
 
 interface ProductPageProps {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default async function ProductPage({ params, searchParams }: ProductPageProps) {
-  const { slug } = params;
-  const color = searchParams?.color;
-  const size = searchParams?.size;
+export default async function ProductPage({
+  params,
+  searchParams,
+}: ProductPageProps) {
+  // ✅ AWAIT params & searchParams (Next 15 requirement)
+  const { slug } = await params;
+  const qsParams = searchParams ? await searchParams : {};
+
+  const color = qsParams?.color;
+  const size = qsParams?.size;
 
   let url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/product/details/${slug}`;
 
@@ -20,7 +27,6 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
     url += `?${qs.toString()}`;
   }
 
-  // ❗Use native fetch instead of axios
   const res = await fetch(url, {
     cache: "no-store",
   });
@@ -34,7 +40,6 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
   }
 
   const getProduct = await res.json();
-  console.log("GET PRODUCT RESPONSE:", getProduct);
 
   if (!getProduct.success) {
     return (
@@ -46,12 +51,12 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
 
   return (
     <ProductDetails
-      product={getProduct?.data?.product}
-      variant={getProduct?.data?.variant}
-      colors={getProduct?.data?.colors}
-      sizes={getProduct?.data?.sizes}
-      reviewCount={getProduct?.data?.reviewCount}
-      addons={getProduct?.data?.addons}
+      product={getProduct.data.product}
+      variant={getProduct.data.variant}
+      colors={getProduct.data.colors}
+      sizes={getProduct.data.sizes}
+      reviewCount={getProduct.data.reviewCount}
+      addons={getProduct.data.addons}
     />
   );
 }

@@ -33,6 +33,7 @@ import axios from "axios";
 import useFetch from "@/hooks/useFetch";
 
 import dayjs from "dayjs";
+import { useParams } from "next/navigation";
 
 /* --------------------------------------
    ✔ Extract edit schema (from master zodSchema)
@@ -91,9 +92,10 @@ const breadcrumbData = [
   { href: "", label: "Edit Coupon" },
 ];
 
-export default function EditCouponPage({ params }: EditCouponPageProps) {
+export default function EditCouponPage() {
   // Use params directly — don't use `use()` in a client component
-  const id = params.id;
+  const params = useParams();
+  const id = params.id as string;
 
   /* --------------------------------------
      ✔ Fetch coupon

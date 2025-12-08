@@ -34,6 +34,7 @@ import useFetch from "@/hooks/useFetch";
 import Select from "@/components/Select";
 import ModalMedia from "@/components/Application/Admin/ModalMedia";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 
 /* -----------------------------------------
@@ -100,8 +101,9 @@ const breadcrumbData = [
 /* -----------------------------------------
    Component
 ------------------------------------------ */
-export default function EditProduct({ params }: EditProductPageProps) {
-  const id = params.id;
+export default function EditProduct() {
+  const params = useParams();
+  const id = params.id as string;
 
   /* Fetch category list */
   const { data: categoryResponse } = useFetch<{

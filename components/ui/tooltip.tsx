@@ -36,7 +36,7 @@ export function TooltipContent({
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
   
   // Try reading Tooltip root context
-  const context = (TooltipPrimitive as any).__context;
+  const context = (TooltipPrimitive as any).context;
 
   // ❗ If no TooltipRoot above → DO NOT render Portal
   if (!context || !context.Provider) {

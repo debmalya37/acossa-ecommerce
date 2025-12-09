@@ -1,52 +1,48 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import {
+  Search,
+  User,
+  Menu,
+  X,
+  ChevronDown,
+} from "lucide-react";
 import CartPage from "@/components/Application/Website/Cart";
 import axios from "axios";
-import Link from 'next/link';
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/store/reducer/authReducer";
 import { useRouter } from "next/navigation";
 
-
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-const dispatch = useDispatch();
-const router = useRouter();
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-// ✅ read auth from redux
-const auth = useSelector((state: any) => state.authStore.auth);
+  const auth = useSelector((state: any) => state.authStore.auth);
 
   // ============================
-  // REAL CATEGORY STATE
+  // FETCH SAREE CATEGORIES
   // ============================
   const [sareeCategories, setSareeCategories] = useState<
     { _id: string; name: string; slug: string }[]
   >([]);
 
-  // ============================
-  // FETCH REAL CATEGORIES (ONLY SAREES)
-  // ============================
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const base = process.env.NEXT_PUBLIC_BASE_URL;
-
         const { data } = await axios.get(`${base}/api/category?size=50`);
 
         if (data.success) {
-          // Example logic:
-          // You have categories like "Soft-Silk-saree", "georgette-ready-to-wear-saree", etc.
-          // Filter ONLY categories belonging to SAREES
-          const sareeCats = data.data.filter((cat: any) =>
-            cat.slug?.toLowerCase().includes("saree")
+          setSareeCategories(
+            data.data.filter((cat: any) =>
+              cat.slug?.toLowerCase().includes("saree")
+            )
           );
-
-          setSareeCategories(sareeCats);
         }
       } catch (error) {
         console.log("Category fetch error:", error);
@@ -57,300 +53,227 @@ const auth = useSelector((state: any) => state.authStore.auth);
   }, []);
 
   const handleLogout = async () => {
-  try {
     await axios.post("/api/auth/logout");
     dispatch(logout());
     router.push("/auth/login");
-  } catch (err) {
-    console.error("Logout failed", err);
-  }
-};
-
-  // ============================
-  // STATIC CATEGORY MENU
-  // (Only Sarees replaced by real data)
-  // ============================
-
-  const categories = {
-    'Sarees': sareeCategories,                   // Now dynamic
-    'Lehengas': ['Bridal Lehengas', 'Designer Lehengas', 'Wedding Lehengas'],
-    'Suits & Sets': ['Anarkali Sets', 'Sharara Sets', 'Palazzo Sets'],
   };
 
+  // ============================
+  // SHARED NAV STRUCTURE
+  // ============================
+  const navLinks = [
+    { label: "Shop", href: "/shop" },
+    {
+      label: "Sarees",
+      children: sareeCategories.map((c) => ({
+        label: c.name,
+        href: `/shop?category=${c._id}`,
+      })),
+    },
+    {
+      label: "Lehengas",
+      children: [
+        { label: "Bridal Lehengas", href: "/shop" },
+        { label: "Designer Lehengas", href: "/shop" },
+        { label: "Wedding Lehengas", href: "/shop" },
+      ],
+    },
+    {
+      label: "Suits & Sets",
+      children: [
+        { label: "Anarkali Sets", href: "/shop" },
+        { label: "Sharara Sets", href: "/shop" },
+        { label: "Palazzo Sets", href: "/shop" },
+      ],
+    },
+    { label: "New Arrivals", href: "/shop" },
+    { label: "Wholesale", href: "/wholesaler" },
+    { label: "About Us", href: "/about" },
+    { label: "Blog", href: "/blog" },
+  ];
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
-      {/* Top Bar */}
-      {/* TOP MARQUEE BAR */}
-<div className="bg-black text-white text-xs py-2 overflow-hidden">
-  <div className="relative w-full">
-    {/* Marquee Track */}
-    <div className="flex w-max animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
-      
-      {/* ✅ DUPLICATED CONTENT (required for seamless loop) */}
-      {[1, 2].map((_, i) => (
-        <div key={i} className="flex items-center gap-10 px-10">
-          <span>|</span>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b">
+      {/* ---------- Top Bar ---------- */}
+      <div className="bg-black text-white text-xs py-2 overflow-hidden">
+        <div className="flex animate-marquee whitespace-nowrap gap-10 px-10">
           <span>DUTY PAID SERVICE AVAILABLE IN USA</span>
-          <span>|</span>
+          <span>•</span>
           <span>FREE SHIPPING WORLDWIDE</span>
-          <span>|</span>
+          <span>•</span>
           <span>HANDCRAFTED IN INDIA</span>
-
-          {/* <span>|</span> */}
-          {/* <a href="#" className="hover:text-gray-300">Track Order</a>
-          <span>|</span>
-          <a href="#" className="hover:text-gray-300">Store Locator</a> */}
         </div>
-      ))}
-    </div>
-  </div>
-</div>
+      </div>
 
-
-      {/* Main Header */}
+      {/* ---------- Header ---------- */}
       <div className="px-4 py-2">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Mobile Menu Button */}
-          <button 
+          {/* Mobile Toggle */}
+          <button
             className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X /> : <Menu />}
           </button>
 
           {/* Logo */}
-          {/* Logo Section */}
-          <div className="flex-shrink-0">
-            <Link href="/">
-              {/* Using the path you specified. In a real app, ensure this file exists in public/assets/image/logo/ */}
-              <img 
-                src="/assets/images/logo/acossa.jpg" 
-                alt="ACOSSA ENTERPRISE" 
-                className="h-20 md:h-28 w-auto object-contain"
-                onError={(e: any) => {
-                   // Fallback if image is missing during preview
-                   e.target.style.display = 'none';
-                   e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              <span className="hidden text-2xl font-serif font-bold tracking-wider">ACOSSA</span>
-            </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link
-  href="/shop"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  Shop
-</Link>
-
-            {Object.keys(categories).map((category) => (
-              <div 
-                key={category}
-                className="relative group"
-                onMouseEnter={() => setActiveDropdown(category)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <button className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors flex items-center gap-1">
-                  {category}
-                  {categories[category as keyof typeof categories].length > 0 && (
-                    <ChevronDown size={14} />
-                  )}
-                </button>
-                
-                {/* Dropdown */}
-                {categories[category as keyof typeof categories].length > 0 && (
-                  <div className={`absolute top-full left-0 mt-2 w-56 bg-white shadow-xl border border-gray-100 rounded-sm transition-all duration-200 ${
-                    activeDropdown === category ? 'opacity-100 visible' : 'opacity-0 invisible'
-                  }`}>
-                    <div className="py-2">
-                      {category === "Sarees"
-                        ? sareeCategories.map((cat) => (
-                            <a
-                              key={cat._id}
-                              href={`/shop?category=${cat._id}`}
-                              className="block px-4 py-2 text-base hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer"
-                            >
-                              {cat.name}
-                            </a>
-                          ))
-                        : categories[category as keyof typeof categories].map((item:any) => (
-                            <a 
-                              key={item}
-                              href="/shop" 
-                              className="block px-4 py-2 text-base hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer"
-                            >
-                              {item}
-                            </a>
-                          ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-            
-            {/* <Link
-  href="/shop"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  Men&apos;s Wear
-</Link>
-            <Link
-  href="/shop"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  Kids
-</Link> */}
-<Link
-  href="/shop"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  New Arrivals
-</Link>
-<Link
-  href="/wholesaler"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  Wholesale
-</Link>
-            <Link
-  href="/about"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  About Us
-</Link>
-          </nav>
-          {/* Icons */}
-          <div className="flex items-center gap-4">
-            {/* ✅ AUTH ACTIONS */}
-  {!auth ? (
-    <>
-      <Link
-        href="/auth/login"
-        className="text-sm font-medium hover:text-rose-600 transition-colors"
-      >
-        Login
-      </Link>
-
-      <Link
-        href="/auth/register"
-        className="text-sm font-medium border px-4 py-1.5 rounded hover:bg-rose-600 hover:text-white transition-colors"
-      >
-        Sign Up
-      </Link>
-    </>
-  ) : (
-    <button
-      onClick={handleLogout}
-      className="text-sm font-medium text-red-600 hover:underline"
-    >
-      Logout
-    </button>
-  )}
-        
-            <button className="hover:text-rose-600 transition-colors">
-              <Link href="/my-account">
-              <User size={20} />
-              </Link>
-            </button>
-            <CartPage />
-          </div>
-        </div>
-
-        {/* Mobile Search Bar */}
-        <div className="md:hidden mt-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search for sarees, lehengas..." 
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-rose-600"
+          <Link href="/">
+            <img
+              src="/assets/images/logo/acossa.jpg"
+              className="h-16 md:h-24 object-contain"
+              alt="ACOSSA"
             />
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-8">
+  {navLinks.map((nav) => (
+    <div key={nav.label} className="relative group">
+      {!nav.children ? (
+        <Link
+          href={nav.href!}
+          className="hover:text-rose-600 transition"
+        >
+          {nav.label}
+        </Link>
+      ) : (
+        <>
+          <button
+            type="button"
+            className="flex items-center gap-1 hover:text-rose-600 transition"
+          >
+            {nav.label}
+            <ChevronDown size={14} />
+          </button>
+
+          {/* ✅ DROPDOWN */}
+          <div
+            className="
+              absolute 
+              left-0 
+              top-full 
+              mt-3
+              w-60
+              bg-white
+              border
+              shadow-xl
+              rounded-md
+              opacity-0
+              invisible
+              translate-y-2
+              group-hover:opacity-100
+              group-hover:visible
+              group-hover:translate-y-0
+              transition-all
+              duration-200
+              z-50
+            "
+          >
+            {nav.children.map((child) => (
+              <Link
+                key={child.label}
+                href={child.href}
+                className="
+                  block 
+                  px-4 
+                  py-2.5 
+                  text-sm 
+                  hover:bg-rose-50 
+                  hover:text-rose-600
+                  transition
+                "
+              >
+                {child.label}
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  ))}
+</nav>
+
+
+          {/* Right Icons */}
+          <div className="flex items-center gap-4">
+            {!auth ? (
+              <>
+                <Link href="/auth/login">Login</Link>
+                <Link
+                  href="/auth/register"
+                  className="border px-3 py-1 rounded"
+                >
+                  Sign Up
+                </Link>
+              </>
+            ) : (
+              <button onClick={handleLogout} className="text-red-600">
+                Logout
+              </button>
+            )}
+
+            <Link href="/my-account">
+              <User size={20} />
+            </Link>
+            <CartPage />
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* ---------- Mobile Menu ---------- */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 absolute top-full left-0 right-0 shadow-lg max-h-[calc(100vh-180px)] overflow-y-auto">
-          <nav className="py-4">
-            <Link
-  href="/shop"
-  className="text-sm font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  Shop
-</Link>
+  <div className="md:hidden bg-white border-t shadow">
+    {navLinks.map((nav) => (
+      <div key={nav.label} className="border-b">
+        {nav.children ? (
+          <>
+            {/* DROPDOWN BUTTON */}
+            <button
+              className="w-full px-4 py-3 flex justify-between items-center"
+              onClick={() =>
+                setActiveDropdown(
+                  activeDropdown === nav.label ? null : nav.label
+                )
+              }
+            >
+              {nav.label}
+              <ChevronDown size={18} />
+            </button>
 
-            {Object.entries(categories).map(([category, items]) => (
-              <div key={category} className="border-b border-gray-100">
-                <button 
-                  className="w-full px-4 py-3 text-left font-medium flex items-center justify-between"
-                  onClick={() => setActiveDropdown(activeDropdown === category ? null : category)}
-                >
-                  {category}
-                  {items.length > 0 && (
-                    <ChevronDown 
-                      className={`transition-transform ${activeDropdown === category ? 'rotate-180' : ''}`}
-                      size={18} 
-                    />
-                  )}
-                </button>
-
-                {/* MOBILE DROPDOWN */}
-                {items.length > 0 && activeDropdown === category && (
-                  <div className="bg-gray-50 px-4 py-2">
-                    {category === "Sarees"
-                      ? sareeCategories.map((cat) => (
-                          <a
-                            key={cat._id}
-                            href={`/shop?category=${cat._id}`}
-                            className="block py-2 text-sm text-gray-700 hover:text-rose-600"
-                          >
-                            {cat.name}
-                          </a>
-                        ))
-                      : items.map((item:any) => (
-                          <a 
-                            key={item}
-                            href="/shop" 
-                            className="block py-2 text-sm text-gray-700 hover:text-rose-600"
-                          >
-                            {item}
-                          </a>
-                        ))}
-                  </div>
-                )}
+            {/* DROPDOWN ITEMS */}
+            {activeDropdown === nav.label && (
+              <div className="bg-gray-50">
+                {nav.children.map((child) => (
+                  <Link
+                    key={child.label}
+                    href={child.href}
+                    className="block px-6 py-2 text-sm hover:text-rose-600"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setActiveDropdown(null);
+                    }}
+                  >
+                    {child.label}
+                  </Link>
+                ))}
               </div>
-            ))}
-            {/* <Link
-  href="/shop"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  Men&apos;s Wear
-</Link>
-            <Link
-  href="/shop"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  Kids
-</Link> */}
-            <Link
-  href="/shop"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  New Arrivals
-</Link>
-<Link
-  href="/wholesaler"
-  className="text-base font-medium tracking-wide hover:text-rose-600 transition-colors"
->
-  Wholesale
-</Link>
-          </nav>
-        </div>
-      )}
+            )}
+          </>
+        ) : (
+          /* ✅ SINGLE LINK ONLY */
+          <Link
+            href={nav.href!}
+            className="block px-4 py-3"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {nav.label}
+          </Link>
+        )}
+      </div>
+    ))}
+  </div>
+)}
+
     </header>
   );
 };

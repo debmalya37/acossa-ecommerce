@@ -72,6 +72,7 @@ const CheckoutPage = () => {
   const router = useRouter();
   const cart = useSelector((store:any) => store.cartStore);
   const authStore = useSelector((store:any) => store.authStore);
+  const isLoggedIn = !!authStore?.auth;
   const dispatch = useDispatch();
 const [verifiedCartData, setVerifiedCartData] = useState<VerifiedCartItem[]>([]);
 
@@ -520,9 +521,24 @@ rzp.open();
                       </div>
 
                         <div className="mb-3">
-                          <ButtonLoading loading={placingOrder} type='submit' text='Place Order' className='bg-black rounded-full px-5 cursor-pointer' />
-                           
-                        </div>
+  {!isLoggedIn ? (
+    <Button
+      type="button"
+      className="bg-black rounded-full px-5 w-full"
+      onClick={() => router.push("/auth/login")}
+    >
+      Login to Place Order
+    </Button>
+  ) : (
+    <ButtonLoading
+      loading={placingOrder}
+      type="submit"
+      text="Place Order"
+      className="bg-black rounded-full px-5 cursor-pointer w-full"
+    />
+  )}
+</div>
+
                       
                     </form>
                   </Form>
@@ -665,13 +681,13 @@ rzp.open();
 
                 </div>
 
-                <Button
+                {/* <Button
                   type='button'
                   className='w-full bg-black rounded-full mt-5 mb-3'
                   asChild
                 >
                   <Link href="/checkout">Proceed to Checkout</Link>
-                </Button>
+                </Button> */}
 
                 <p className='text-center'>
                   <Link href="/shop">Continue Shopping</Link>

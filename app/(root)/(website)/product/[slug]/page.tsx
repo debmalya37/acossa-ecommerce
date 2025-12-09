@@ -18,7 +18,9 @@ export default async function ProductPage({
   const color = qsParams?.color;
   const size = qsParams?.size;
 
-  let url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/product/details/${slug}`;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+let url = `${baseUrl}/api/product/details/${slug}`;
+
 
   if (color || size) {
     const qs = new URLSearchParams();
@@ -27,9 +29,7 @@ export default async function ProductPage({
     url += `?${qs.toString()}`;
   }
 
-  const res = await fetch(url, {
-    cache: "no-store",
-  });
+  const res = await fetch(url, { next: { revalidate: 60 } });
 
   if (!res.ok) {
     return (

@@ -110,7 +110,8 @@ const Footer = () => {
               <p className="leading-relaxed text-rose-100 text-xs opacity-80">
                 Feather International Private Limited <br />
                 B-2, 303, Anand Vatika, Satellite Road, <br />
-                Motavarachha, Surat – 394101, India
+                Motavarachha, Surat – 394101, India <br />
+                CIN:U17299GJ2022PTC137811
               </p>
             </li>
           </ul>
@@ -118,7 +119,7 @@ const Footer = () => {
       </div>
 
       {/* BOTTOM BAR */}
-      <div className="relative z-10 mt-12 border-t border-rose-800/50 text-white pt-6  bg-gray-950/20">
+      <div className="relative z-10 mt-12 border-t border-rose-800/50 text-white pt-6 bg-gray-950/70">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-xs text-rose-200/80 gap-2 text-center text-align-center">
            <p></p>
            <span><br />

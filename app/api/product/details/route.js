@@ -24,12 +24,6 @@ import ReviewModel from "@/models/Review";
 ------------------------------------------------------ */
 export async function GET(request, params) {
   try {
-    // Authentication
-    // const auth = await isAuthenticated("admin");
-    // if (!auth.isAuth) {
-    //   return response(false, 403, "Unauthorized");
-    // }
-
     await dbConnect();
 
     const getParams = await params

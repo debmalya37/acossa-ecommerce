@@ -35,6 +35,16 @@ type RealProduct = {
   media: { secure_url: string }[];
 };
 
+async function getLatestBlogs() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog?limit=3`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) return { blogs: [] };
+  return res.json();
+}
+
 
 /* ---------------------------
    Ornaments & Decorations
@@ -167,6 +177,7 @@ const categories = [
    Component
    --------------------------- */
 const PremiumHome: React.FC = () => {
+  
   const [currentSlide, setCurrentSlide] = useState(0);
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
 const [categories, setCategories] = useState<any[]>([]);
@@ -174,6 +185,9 @@ const [categories, setCategories] = useState<any[]>([]);
    // =============== REAL PRODUCTS ===============
   const [latest, setLatest] = useState<RealProduct[]>([]);
   const [premium, setPremium] = useState<RealProduct[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
+const [blogsLoading, setBlogsLoading] = useState(true);
+
 
   /* FETCH REAL PRODUCTS */
   useEffect(() => {
@@ -219,6 +233,23 @@ const [categories, setCategories] = useState<any[]>([]);
     }, 6000);
     return () => clearInterval(t);
   }, []);
+
+  useEffect(() => {
+  const fetchBlogs = async () => {
+    try {
+      const base = process.env.NEXT_PUBLIC_BASE_URL;
+      const res = await axios.get(`${base}/api/blog?limit=3`);
+      setBlogs(res.data.blogs || []);
+    } catch (error) {
+      console.error("Blog fetch error:", error);
+    } finally {
+      setBlogsLoading(false);
+    }
+  };
+
+  fetchBlogs();
+}, []);
+
 
 
   return (
@@ -665,41 +696,74 @@ const [categories, setCategories] = useState<any[]>([]);
       </section>
 
       {/* Blog / Editorial */}
-      <section className="py-10 bg-rose-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center">
-            <h2 className="premium-serif text-3xl text-rose-900">LATEST EDITORIALS</h2>
-            <OrnateDivider />
-            <p className="text-gray-600">Stories — style guides — behind the craft</p>
-          </div>
+      {!blogsLoading && blogs.length > 0 && (
+  <section className="py-14 bg-rose-50">
+    <div className="max-w-7xl mx-auto px-6">
+      {/* HEADER */}
+      <div className="text-center mb-10">
+        <h2 className="font-serif text-3xl md:text-4xl text-rose-900 tracking-wide">
+          Latest Editorials
+        </h2>
+        <OrnateDivider />
+        <p className="text-gray-600 text-sm md:text-base">
+          Stories · Style guides · Behind the craft
+        </p>
+      </div>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <article className="rounded-lg overflow-hidden bg-white shadow">
-              <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=900&q=80" alt="blog1" className="w-full h-44 object-cover" />
-              <div className="p-6">
-                <h3 className="font-semibold mb-2">Top Saree Picks for 2025</h3>
-                <p className="text-sm text-gray-600">A curated edit of trending drapes and statement weaves for the season.</p>
-              </div>
-            </article>
+      {/* BLOG CARDS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {blogs.map((blog) => (
+          <article
+            key={blog._id}
+            className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition"
+          >
+            <Link href={`/blog/${blog.slug}`}>
 
-            <article className="rounded-lg overflow-hidden bg-white shadow">
-              <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=900&q=80" alt="blog2" className="w-full h-44 object-cover" />
-              <div className="p-6">
-                <h3 className="font-semibold mb-2">How to Style Bridal Jewelry</h3>
-                <p className="text-sm text-gray-600">An insider’s guide to pairing kundan, polki and heritage pieces with your saree.</p>
+              <div className="bg-rose-100 flex items-center justify-center h-48">
+                <img
+                  src={blog.coverImage}
+                  alt={blog.title}
+                  className="max-h-full object-contain"
+                />
               </div>
-            </article>
 
-            <article className="rounded-lg overflow-hidden bg-white shadow">
-              <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=900&q=80" alt="blog3" className="w-full h-44 object-cover" />
               <div className="p-6">
-                <h3 className="font-semibold mb-2">Caring for Your Handwork</h3>
-                <p className="text-sm text-gray-600">Expert tips to preserve zari, beads and delicate embroidery for generations.</p>
+                {blog.categories?.length > 0 && (
+                  <p className="text-xs uppercase tracking-wide text-rose-500 mb-2">
+                    {blog.categories[0]}
+                  </p>
+                )}
+
+                <h3 className="font-serif font-semibold text-lg mb-2 line-clamp-2">
+                  {blog.title}
+                </h3>
+
+                <p className="text-sm text-gray-600 line-clamp-3">
+                  {blog.excerpt}
+                </p>
+
+                <p className="mt-4 text-xs text-gray-500">
+                  {new Date(blog.createdAt).toDateString()}
+                </p>
               </div>
-            </article>
-          </div>
-        </div>
-      </section>
+
+            </Link>
+          </article>
+        ))}
+      </div>
+
+      <div className="mt-12 text-center">
+        <Link
+          href="/blog"
+          className="inline-block text-sm font-medium text-rose-700 border-b border-rose-300 hover:border-rose-600 transition"
+        >
+          View All Editorials →
+        </Link>
+      </div>
+    </div>
+  </section>
+)}
+
 
       {/* Footer */}
       

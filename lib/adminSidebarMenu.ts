@@ -87,4 +87,10 @@ export const adminAppSidebarMenu =  [
             },
         ]
     },
+    {
+        title: "Blog",
+        href: "/admin/blogs",
+        icon: AiOutlineDashboard,
+    }
 ]
+

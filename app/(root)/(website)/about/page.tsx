@@ -28,8 +28,8 @@ const AboutPage = () => {
         </div>
 
         <p className="max-w-3xl mx-auto text-base md:text-lg text-gray-600 leading-relaxed">
-          Surat’s trusted ethnic wear brand bringing premium Indian fashion to the world — 
-          beautifully crafted, sensibly priced, and globally delivered.
+          Surat’s trusted ethnic wear brand making premium Indian fashion
+          affordable, stylish, and globally accessible.
         </p>
       </section>
 
@@ -41,17 +41,20 @@ const AboutPage = () => {
           </h2>
 
           <p className="text-gray-700 leading-relaxed mb-4">
-            Founded in <strong>2022</strong>, Acossa Enterprise began with a simple belief — 
-            premium Indian ethnic wear should be accessible, honest, and globally available.
-            Based in the heart of <strong>Surat</strong>, we work directly with skilled artisans
-            and trusted manufacturers to offer sarees, lehengas, salwar suits, kurti sets,
-            and festive outfits without inflated showroom markups.
+            Founded in <strong>2022</strong>, Acossa Enterprise set out with a simple
+            mission — to make premium Indian ethnic wear affordable, stylish, and
+            globally accessible. Based in <strong>Surat</strong>, we work directly
+            with skilled makers and trusted manufacturers to offer high-quality
+            sarees, lehengas, salwar suits, kurti sets, and festive outfits —
+            all at honest, direct-from-manufacturer pricing.
           </p>
 
           <p className="text-gray-700 leading-relaxed">
-            Every Acossa outfit is designed to drape beautifully, feel luxurious on the skin,
-            and photograph flawlessly — whether it’s a wedding, garba night, festival, or 
-            everyday elegance.
+            As a growing global brand, we specialize in sarees with worldwide
+            delivery, custom-stitched lehengas online, and Indian wedding outfits
+            for abroad. Every outfit is crafted to drape beautifully, feel
+            luxurious, and photograph perfectly — whether it’s weddings,
+            garba nights, festivals, or daily wear.
           </p>
         </div>
       </section>
@@ -65,13 +68,13 @@ const AboutPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             "Direct-from-manufacturer ethnic wear",
-            "Premium sarees & lehengas at sensible pricing",
-            "Global shipping to USA, UK, Canada, Australia & Middle East",
-            "Custom blouse stitching, fall & pico services",
+            "Premium sarees and lehengas at sensible pricing",
+            "Global shipping to USA, Canada, UK, Australia & Middle East",
+            "Custom blouse stitching, fall and pico service",
             "Fresh, limited-edition collections",
-            "Trusted B2B & B2C ethnic wear supplier",
+            "Trusted B2B & B2C Indian ethnic wear supplier",
             "Fast dispatch from Surat, India",
-            "Latest Indian ethnic fashion trends 2025",
+            "Latest Indian ethnic fashion 2025 trends",
           ].map((item, idx) => (
             <div
               key={idx}
@@ -91,9 +94,10 @@ const AboutPage = () => {
             Made in India · Loved Worldwide
           </h2>
           <p className="text-rose-100 max-w-3xl mx-auto leading-relaxed">
-            From daily wear sarees to Indian wedding outfits for abroad,
-            Acossa delivers designer-level craftsmanship globally — without
-            premium price barriers.
+            Our curated catalog features daily wear sarees at affordable prices,
+            premium lehengas under budget, and the latest Indian ethnic fashion
+            trends — giving customers worldwide designer-level outfits without
+            showroom markups.
           </p>
         </div>
       </section>
@@ -102,19 +106,20 @@ const AboutPage = () => {
       <section className="relative z-10 max-w-6xl mx-auto px-6 py-16">
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-12">
           <h2 className="text-2xl md:text-3xl font-serif font-semibold mb-6 text-gray-900">
-            Need Styling or Customization Help?
+            Need Sizing, Styling or Customization Help?
           </h2>
 
           <p className="text-gray-600 mb-8">
-            Our WhatsApp team is always ready to assist with sizing, styling,
-            fabric guidance, and custom stitching.
+            Our WhatsApp team is always ready with quick assistance and expert
+            guidance on sizing, styling, fabric selection, and customization.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
             <div className="flex items-start gap-3">
               <Mail className="text-rose-600 mt-1" />
               <span>
-                <strong>Email</strong><br />
+                <strong>Email</strong>
+                <br />
                 info@acossaenterprise.com
               </span>
             </div>
@@ -122,16 +127,20 @@ const AboutPage = () => {
             <div className="flex items-start gap-3">
               <Phone className="text-rose-600 mt-1" />
               <span>
-                <strong>WhatsApp / Call</strong><br />
+                <strong>WhatsApp / Call</strong>
+                <br />
                 +91 96380 00593
               </span>
             </div>
           </div>
 
           <div className="mt-8 text-xs text-gray-500 leading-relaxed">
-            <strong>Registered Office</strong><br />
-            Feather International Pvt Ltd<br />
-            303 Anand Vatika, Motavarachha,<br />
+            <strong>Registered Office</strong>
+            <br />
+            Feather International Pvt Ltd
+            <br />
+            303 Anand Vatika, Motavarachha,
+            <br />
             Surat – 394101, India
           </div>
 

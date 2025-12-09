@@ -230,7 +230,7 @@ const AddProduct = () => {
                                         <FormItem>
                                             <FormLabel>Name <span className='text-red-500'>*</span></FormLabel>
                                             <FormControl>
-                                                <Input type={"text"} placeholder="Enter category name" {...field} />
+                                                <Input type={"text"} placeholder="Enter product name" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

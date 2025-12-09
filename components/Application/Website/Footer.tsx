@@ -3,7 +3,7 @@
 import React from "react";
 // import Link from "next/link"; // Commented out for preview environment
 import { Facebook, Instagram, Youtube, Mail, Phone } from "lucide-react";
-import { BsWhatsapp } from "react-icons/bs";
+import { BsLinkedin, BsPinterest, BsWhatsapp } from "react-icons/bs";
 
 // Mock Link component for preview environment
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,6 +56,12 @@ const Footer = () => {
           <div className="flex gap-4 mt-5">
             <Link href="https://www.instagram.com/acossaenterprise" className="hover:text-rose-200 hover:scale-110 transition-transform">
               <Instagram size={20} />
+            </Link>
+            <Link href="https://in.pinterest.com/Acossaenterprise/" className="hover:text-rose-200 hover:scale-110 transition-transform">
+              <BsPinterest size={20} />
+            </Link>
+            <Link href="http://www.linkedin.com/in/harshgojaria" className="hover:text-rose-200 hover:scale-110 transition-transform">
+              <BsLinkedin size={20} />
             </Link>
             <Link href="https://www.facebook.com/share/17WpRnhm3F/" className="hover:text-rose-200 hover:scale-110 transition-transform">
               <Facebook size={20} />

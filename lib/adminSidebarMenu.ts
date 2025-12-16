@@ -20,11 +20,11 @@ export const adminAppSidebarMenu =  [
         submenu : [
             {
                 title: "All Categories",
-                href: "/admin/categories",
+                href: "/admin/category",
             },
             {
                 title: "Add Category",
-                href: "/admin/categories/add",
+                href: "/admin/category/add",
             },
         ]
     },
@@ -35,19 +35,27 @@ export const adminAppSidebarMenu =  [
         submenu: [
             {
                 title: "All Products",
-                href: "/admin/products",
+                href: "/admin/product",
             },
             {
                 title: "Add Product",
-                href: "/admin/products/add",
+                href: "/admin/product/add",
             },
             {
                 title: "All Variants",
-                href: "/admin/products/add",
+                href: "/admin/productvariant",
             },
             {
                 title: "Add Variant",
-                href: "/admin/products/add",
+                href: "/admin/productvariant/add",
+            },
+            {
+                title: "All Product Addons",
+                href: "/admin/productaddons",
+            },
+            {
+                title: "Add Product Addon",
+                href: "/admin/productaddons/create",
             }
         ]
     },
@@ -58,13 +66,13 @@ export const adminAppSidebarMenu =  [
     },
     {
         title: "Customers",
-        href: "/admin/users",
+        href: "/admin/customers",
         icon: LuUserRound,
 
     },
     {
         title: " Rating & Reviews",
-        href: "/admin/reviews",
+        href: "/admin/review",
         icon: IoMdStarOutline,
     },
     {
@@ -79,13 +87,18 @@ export const adminAppSidebarMenu =  [
         submenu: [
             {
                 title: "All Coupons",
-                href: "/admin/coupons",
+                href: "/admin/coupon",
             },
             {
                 title: "Add Coupon",
-                href: "/admin/coupons/add",
+                href: "/admin/coupon/add",
             },
         ]
+    },
+    {
+        title: "SEO Management Board",
+        href: "/admin/seo",
+        icon: AiOutlineDashboard,
     },
     {
         title: "Blog",

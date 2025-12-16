@@ -12,6 +12,13 @@ export interface IProduct extends Document {
   brand?: string;
   fabric?: string;
   occasion?: string;
+  
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
+
   deletedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -73,6 +80,25 @@ const productSchema = new Schema<IProduct>(
     brand: { type: String, trim: true, default: "" },
     fabric: { type: String, trim: true, default: "" },
     occasion: { type: String, trim: true, default: "" },
+    seo: {
+  title: {
+    type: String,
+    trim: true,
+    maxlength: 70, // Google safe
+  },
+  description: {
+    type: String,
+    trim: true,
+    maxlength: 160,
+  },
+  keywords: [
+    {
+      type: String,
+      trim: true,
+    },
+  ],
+},
+
     deletedAt: {
       type: Date,
       default: null,

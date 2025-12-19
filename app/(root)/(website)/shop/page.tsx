@@ -4,7 +4,7 @@ import ShopPage from "./Shop";
 import dbConnect from "@/lib/dbConnect";
 import PageSEOModel from "@/models/pageSEO";
 import { pageSeoFallback } from "@/lib/seoFallback";
-
+export const dynamic = "force-dynamic";
 // ✅ ADD THIS
 export async function generateMetadata() {
   await dbConnect();

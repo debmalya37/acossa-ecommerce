@@ -235,20 +235,82 @@ const ShopPage: React.FC = () => {
     inStockOnly ? 1 : 0,
   ].reduce((a, b) => a + b, 0);
 
+
+
+  const categoryName = useMemo(() => {
+  if (!selectedCategory || selectedCategory === "all") return "All Collections";
+
+  // Case 1: category filter list exists
+  if (filterData?.categories?.length) {
+    const found = filterData.categories.find(
+      (c: any) => c._id === selectedCategory
+    );
+    if (found?.name) return found.name;
+  }
+
+  // Case 2: fallback from products
+  const productWithCategory = productsRaw.find(
+    p =>
+      typeof p.category === "object" &&
+      p.category?._id === selectedCategory
+  );
+
+  if (typeof productWithCategory?.category === "object") {
+    return productWithCategory.category.name;
+  }
+
+  return "Collection";
+}, [selectedCategory, filterData, productsRaw]);
+
+
   return (
     <div className="min-h-screen bg-rose-50">
       {/* Hero */}
-      <div className="relative h-64 md:h-80 rounded-b-[40px] overflow-hidden shadow-xl mb-4">
-        <div className="absolute inset-0 bg-cover bg-center scale-[1.1] brightness-105" style={{ backgroundImage: "url('/assets/bridal-banner.jpg')" }} />
-        <div className="absolute inset-0 bg-gradient-to-b from-rose-200/30 via-rose-50/10 to-rose-900/60 backdrop-blur-[2px]" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-yellow-200/20 to-transparent" />
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] bg-white/25 backdrop-blur-md rounded-2xl p-6 border border-white/30 shadow-xl">
-          <h1 className="text-rose-900 text-3xl md:text-4xl font-serif font-bold text-center">Luxury Bridal Collection</h1>
-          <p className="text-center mt-2 text-rose-900/80 text-sm md:text-base leading-relaxed">
-            Discover <span className="text-rose-700 font-medium">handwoven sarees</span>, couture lehengas and timeless heritage pieces designed for your once-in-a-lifetime celebration.
-          </p>
-        </div>
+      {/* ================= SHOP HERO ================= */}
+<div className="relative h-[200px] sm:h-[240px] md:h-[300px] lg:h-[340px] overflow-hidden rounded-b-[32px] shadow-2xl mb-6">
+
+  {/* Background – Luxury Gradient */}
+  <div className="absolute inset-0 bg-gradient-to-br from-rose-900 via-rose-800 to-stone-900" />
+
+  {/* Soft Highlight Layer */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-white/5" />
+
+  {/* Content */}
+  <div className="relative h-full flex items-end">
+    <div className="w-full px-4 sm:px-6 pb-6 sm:pb-8">
+      <div
+        className="
+          max-w-3xl mx-auto
+          text-center
+          bg-black/30 backdrop-blur-xl
+          border border-white/15
+          rounded-3xl
+          px-5 py-5 sm:px-8 sm:py-7
+          shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)]
+        "
+      >
+        {/* Eyebrow */}
+        <p className="uppercase tracking-[0.25em] text-[10px] sm:text-xs text-rose-200 mb-2">
+          Curated Collection
+        </p>
+
+        {/* Category Name */}
+        <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-tight">
+          {categoryName}
+        </h1>
+
+        {/* Description */}
+        <p className="mt-3 text-xs sm:text-sm md:text-base text-white/90 leading-relaxed max-w-2xl mx-auto">
+          Explore premium{" "}
+          <span className="text-rose-200 font-medium">{categoryName}</span>{" "}
+          designed for weddings, festivities, and refined everyday elegance.
+        </p>
       </div>
+    </div>
+  </div>
+</div>
+
+
 
       <div className="max-w-7xl mx-auto px-4 pb-12">
         <div className="flex flex-col md:flex-row gap-6">

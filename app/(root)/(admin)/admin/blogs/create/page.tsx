@@ -93,12 +93,45 @@ export default function CreateBlogPage() {
             <label className="block text-sm font-medium mb-2">
               Cover Image URL
             </label>
-            <input
-              value={coverImage}
-              onChange={(e) => setCoverImage(e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
-            />
+            {/* Cover Image Upload */}
+<div className="bg-white border rounded-xl p-5">
+  <label className="block text-sm font-medium mb-2">
+    Cover Image
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={async (e) => {
+      if (!e.target.files?.[0]) return;
+
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      setLoading(true);
+      try {
+        const res = await axios.post("/api/admin/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        setCoverImage(res.data.url);
+      } finally {
+        setLoading(false);
+      }
+    }}
+    className="w-full border rounded-lg px-4 py-2"
+  />
+
+  {coverImage && (
+    <img
+      src={coverImage}
+      alt="Cover preview"
+      className="mt-4 w-full h-48 object-cover rounded-xl border"
+    />
+  )}
+</div>
+
             {coverImage && (
               <img
                 src={coverImage}

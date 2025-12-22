@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { Edit2, ExternalLink, PlusCircle } from "lucide-react";
+import { Edit2, ExternalLink, PlusCircle, Trash2 } from "lucide-react";
+
 
 interface Blog {
   _id: string;
@@ -35,6 +36,20 @@ export default function AdminBlogListPage() {
 
     fetchBlogs();
   }, []);
+
+  const handleDelete = async (id: string) => {
+  const ok = confirm("Are you sure you want to delete this blog? This action cannot be undone.");
+
+  if (!ok) return;
+
+  try {
+    await axios.delete(`/api/admin/blogs/${id}`);
+    setBlogs((prev) => prev.filter((b) => b._id !== id));
+  } catch (err) {
+    alert("Failed to delete blog");
+  }
+};
+
 
   return (
     <div className="max-w-7xl mx-auto p-8 text-gray-900 dark:text-gray-100">
@@ -197,35 +212,37 @@ export default function AdminBlogListPage() {
 
                   {/* ACTIONS */}
                   <td className="p-4 text-right">
-                    <div className="flex justify-end gap-3">
-                      <Link
-                        href={`/blog/${blog.slug}`}
-                        target="_blank"
-                        className="
-                          text-gray-500
-                          hover:text-black
-                          dark:hover:text-white
-                          transition
-                        "
-                        title="View Public Page"
-                      >
-                        <ExternalLink size={16} />
-                      </Link>
+  <div className="flex justify-end gap-3">
+    {/* View */}
+    <Link
+      href={`/blog/${blog.slug}`}
+      target="_blank"
+      title="View Public Page"
+      className="text-gray-500 hover:text-black transition"
+    >
+      <ExternalLink size={16} />
+    </Link>
 
-                      <Link
-                        href={`/admin/blogs/edit/${blog._id}`}
-                        className="
-                          text-gray-500
-                          hover:text-black
-                          dark:hover:text-white
-                          transition
-                        "
-                        title="Edit Blog"
-                      >
-                        <Edit2 size={16} />
-                      </Link>
-                    </div>
-                  </td>
+    {/* Edit */}
+    <Link
+      href={`/admin/blogs/edit/${blog._id}`}
+      title="Edit Blog"
+      className="text-gray-500 hover:text-black transition"
+    >
+      <Edit2 size={16} />
+    </Link>
+
+    {/* Delete */}
+    <button
+      onClick={() => handleDelete(blog._id)}
+      title="Delete Blog"
+      className="text-red-500 hover:text-red-700 transition"
+    >
+      <Trash2 size={16} />
+    </button>
+  </div>
+</td>
+
                 </tr>
               ))}
             </tbody>

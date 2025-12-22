@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import RichTextEditor from "@/components/Application/Admin/RichTextEditor";
+import ImageUpload from "@/components/Application/Admin/ImageUpload";
 
 export default function EditBlogPage() {
   const params = useParams();
@@ -145,17 +146,12 @@ export default function EditBlogPage() {
             <label className="block text-sm font-medium mb-2">
               Cover Image URL
             </label>
-            <input
-              value={coverImage}
-              onChange={(e) => setCoverImage(e.target.value)}
-              className="
-                w-full
-                border border-gray-300 dark:border-gray-600
-                rounded-lg px-4 py-2
-                bg-white dark:bg-gray-800
-                focus:ring-2 focus:ring-black dark:focus:ring-white
-              "
-            />
+            <ImageUpload
+  value={coverImage}
+  onChange={(url) => setCoverImage(url)}
+  
+/>
+
             {coverImage && (
               <img
                 src={coverImage}

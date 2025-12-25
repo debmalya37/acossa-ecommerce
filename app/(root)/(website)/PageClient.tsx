@@ -12,7 +12,8 @@ import { PRODUCT_DETAILS } from "@/routes/WebsiteRoute";
 import InstagramFeed from "@/components/Instagram";
 import Image from "next/image";
 import BrandPromises from "@/components/Home/BrandPromises";
-
+import banner5 from "../../../public/assets/images/hero/5.png";
+import banner1 from "../../../public/assets/images/hero/1.png";
 
 /**
  * Premium Saree Homepage (TSX)
@@ -393,29 +394,33 @@ const [blogsLoading, setBlogsLoading] = useState(true);
   <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-10">
 
     {/* Banner 1 */}
-    <div className="relative w-full overflow-hidden rounded-xl group">
-      <img
-        src="/assets/images/hero/5.png"
+    {/* 1. MOVE HEIGHT CLASSES TO THIS PARENT DIV 👇 */}
+    <div className="relative w-full h-[260px] md:h-[360px] lg:h-[420px] overflow-hidden rounded-xl group">
+      <Image
+        src={banner5.src}
         alt="Party Edit"
-        className="w-full h-[260px] md:h-[360px] lg:h-[420px] object-cover group-hover:scale-105 transition-all duration-700"
+        fill
+        // 2. Add 'sizes' for performance (since you are using fill)
+        sizes="(max-width: 768px) 100vw, 100vw"
+        // 3. Keep 'object-cover' and hover effects here
+        className="object-cover group-hover:scale-105 transition-all duration-700"
       />
-
-      
     </div>
 
     {/* Banner 2 */}
-    <div className="relative w-full overflow-hidden rounded-xl group">
-      <img
-        src="/assets/images/hero/1.png"
+    {/* 1. MOVE HEIGHT CLASSES TO THIS PARENT DIV 👇 */}
+    <div className="relative w-full h-[260px] md:h-[360px] lg:h-[420px] overflow-hidden rounded-xl group">
+      <Image
+        src={banner1.src}
         alt="Sangeet Edit"
-        className="w-full h-[260px] md:h-[360px] lg:h-[420px] object-cover group-hover:scale-105 transition-all duration-700"
+        fill
+        sizes="(max-width: 768px) 100vw, 100vw"
+        className="object-cover group-hover:scale-105 transition-all duration-700"
       />
-
     </div>
 
   </div>
 </section>
-
       {/* Shop By Category */}
        {/* =============================
          NEW SHOP BY CATEGORY (Screenshot Match)

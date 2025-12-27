@@ -478,28 +478,6 @@ console.log("cart now =", cart);
         </div>
       </div>
       </div>
-
-{/* ================= WHAT WE OFFER ================= */}
-<div className="my-20">
-  <h2 className="text-2xl font-semibold mb-8 flex items-center gap-2">
-    ✨ What We Offer
-  </h2>
-
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-    {WHAT_WE_OFFER.map((item, i) => (
-      <div
-        key={i}
-        className="bg-gray-50 rounded-lg p-5 text-center hover:shadow-md transition"
-      >
-        <div className="text-2xl mb-2">{item.icon}</div>
-        <h4 className="text-sm font-semibold mb-2">{item.title}</h4>
-        <p className="text-xs text-gray-600">{item.desc}</p>
-      </div>
-    ))}
-  </div>
-</div>
-
-
       {/* ================= PRODUCT DETAILS ACCORDION ================= */}
 <div className="mb-20 bg-[#faf3e8] rounded-lg px-5">
   <AccordionItem
@@ -549,6 +527,28 @@ console.log("cart now =", cart);
     }
   />
 </div>
+
+{/* ================= WHAT WE OFFER ================= */}
+<div className="my-20">
+  <h2 className="text-2xl font-semibold mb-8 flex items-center gap-2">
+    ✨ What We Offer
+  </h2>
+
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    {WHAT_WE_OFFER.map((item, i) => (
+      <div
+        key={i}
+        className="bg-gray-50 rounded-lg p-5 text-center hover:shadow-md transition"
+      >
+        <div className="text-2xl mb-2">{item.icon}</div>
+        <h4 className="text-sm font-semibold mb-2">{item.title}</h4>
+        <p className="text-xs text-gray-600">{item.desc}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
+
 
 
       <ProductReview productId={product._id} />

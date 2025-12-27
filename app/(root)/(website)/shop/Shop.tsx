@@ -1,10 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { X, SlidersHorizontal, Grid3x3, LayoutGrid, Heart } from "lucide-react";
+import { 
+  X, 
+  SlidersHorizontal, 
+  Grid3x3, 
+  LayoutGrid, 
+  Heart, 
+  ChevronLeft,  // 👈 Import
+  ChevronRight  // 👈 Import
+} from "lucide-react";
 import Filter from "@/components/Application/Website/Filter";
 import Link from "next/link";
 import { PRODUCT_DETAILS } from "@/routes/WebsiteRoute";
@@ -20,6 +27,7 @@ const SIZE_LABEL: Record<Size, string> = {
   XXL: "XXL",
 };
 
+// ... (Type definitions remain the same) ...
 type VariantFromAPI = { _id?: string; size?: string; color?: string; inStock?: boolean };
 type MediaItem = { _id?: string; secure_url?: string; url?: string };
 type ProductFromAPI = {
@@ -66,29 +74,29 @@ const ProductCard: React.FC<{ product: ProductUI }> = ({ product }) => {
       className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-rose-100 relative"
     >
       <div className="relative aspect-[3/4] bg-gradient-to-b from-rose-50 to-white">
-      <Link href={PRODUCT_DETAILS(product.slug)}>
-        <img
-          src={product.image ?? "/assets/placeholder.png"}
-          alt={product.name}
-          className={`w-full h-full object-cover rounded-b-2xl transition-all duration-700 ${hover ? "scale-105" : "scale-100"}`}
-        />
-        {product.badge && (
-          <span className="absolute top-3 left-3 bg-amber-400 text-black px-3 py-1 rounded-full text-xs font-bold shadow">
-            {product.badge}
-          </span>
-        )}
+        <Link href={PRODUCT_DETAILS(product.slug)}>
+          <img
+            src={product.image ?? "/assets/placeholder.png"}
+            alt={product.name}
+            className={`w-full h-full object-cover rounded-b-2xl transition-all duration-700 ${hover ? "scale-105" : "scale-100"}`}
+          />
+          {product.badge && (
+            <span className="absolute top-3 left-3 bg-amber-400 text-black px-3 py-1 rounded-full text-xs font-bold shadow">
+              {product.badge}
+            </span>
+          )}
 
-        <div className={`absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md p-3 transition-all duration-300 rounded-t-2xl shadow-md ${hover ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}`}>
-          <p className="text-xs font-medium text-rose-700 mb-2">Select Size</p>
-          <div className="flex flex-wrap gap-2 mb-3">
-            {product.sizes.map((s) => (
-              <button key={s} className="px-3 py-1 text-xs font-semibold rounded-full border border-rose-300 text-rose-700 hover:bg-rose-600 hover:text-white transition" onClick={() => alert(`${product.name} — ${s}`)}>
-                {SIZE_LABEL[s] || "Free Size"}
-              </button>
-            ))}
+          <div className={`absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md p-3 transition-all duration-300 rounded-t-2xl shadow-md ${hover ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}`}>
+            <p className="text-xs font-medium text-rose-700 mb-2">Select Size</p>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {product.sizes.map((s) => (
+                <button key={s} className="px-3 py-1 text-xs text-gray-900 font-semibold rounded-full border border-rose-300 text-rose-700 hover:bg-rose-600 hover:text-white transition" onClick={(e) => { e.preventDefault(); alert(`${product.name} — ${s}`); }}>
+                  {SIZE_LABEL[s] || "Free Size"}
+                </button>
+              ))}
+            </div>
+            <button className="w-full bg-rose-600 text-white py-2 rounded-xl font-medium shadow hover:bg-rose-700 transition">Quick View</button>
           </div>
-          <button className="w-full bg-rose-600 text-white py-2 rounded-xl font-medium shadow hover:bg-rose-700 transition">Quick View</button>
-        </div>
         </Link>
       </div>
 
@@ -103,8 +111,8 @@ const ProductCard: React.FC<{ product: ProductUI }> = ({ product }) => {
         <p className="text-xs text-gray-500 uppercase mb-2">{product.category ?? "Uncategorized"}</p>
 
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg font-bold text-red-700">${product.sellingPrice.toLocaleString("en-IN")}</span>
-          {product.mrp && product.mrp > product.sellingPrice && <span className="text-sm text-gray-400 line-through">${product.mrp.toLocaleString("en-IN")}</span>}
+          <span className="text-lg font-bold text-red-700">₹{product.sellingPrice.toLocaleString("en-IN")}</span>
+          {product.mrp && product.mrp > product.sellingPrice && <span className="text-sm text-gray-400 line-through">₹{product.mrp.toLocaleString("en-IN")}</span>}
         </div>
 
         <div className="flex justify-between text-xs text-gray-500">
@@ -119,6 +127,9 @@ const ShopPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // ✅ 1. Get current page
+  const currentPage = Number(searchParams.get("page")) || 1;
+
   const queryKey = useMemo(() => searchParams.toString(), [searchParams]);
 
   const selectedCategory = searchParams.get("category") || "all";
@@ -132,10 +143,14 @@ const ShopPage: React.FC = () => {
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(3);
-  const [priceRangeLocal, setPriceRangeLocal] = useState<number>(70000);
+  // const [priceRangeLocal, setPriceRangeLocal] = useState<number>(70000); // Unused for now
   const [loading, setLoading] = useState<boolean>(true);
   const [productsRaw, setProductsRaw] = useState<ProductFromAPI[]>([]);
   const [filterData, setFilterData] = useState<any>({});
+
+  // ✅ 2. State for Pagination Meta
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalProductsCount, setTotalProductsCount] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -144,7 +159,16 @@ const ShopPage: React.FC = () => {
     async function fetchProducts() {
       try {
         setLoading(true);
-        const res = await fetch(`/api/shop/products?${queryKey}`, { signal });
+        // Ensure the API is not cached
+        const res = await fetch(`/api/shop/products?${queryKey}`, { 
+          signal, 
+          cache: "no-store",
+          headers: {
+            'Pragma': 'no-cache',
+            'Cache-Control': 'no-cache'
+          }
+        });
+
         if (!res.ok) {
           console.error("Fetch products status:", res.status);
           setProductsRaw([]);
@@ -155,6 +179,9 @@ const ShopPage: React.FC = () => {
         if (json?.success) {
           setProductsRaw(Array.isArray(json.data) ? json.data : []);
           setFilterData(json.filters ?? {});
+          // ✅ 3. Set Metadata from API
+          setTotalPages(json.meta?.totalPages || 1);
+          setTotalProductsCount(json.meta?.totalProducts || 0);
         } else {
           setProductsRaw([]);
           setFilterData({});
@@ -208,10 +235,17 @@ const ShopPage: React.FC = () => {
     });
   }, [productsRaw]);
 
-  const filtered = products;
+  // filtered is just an alias now, filtering happens on backend
+  const filtered = products; 
 
   const updateFilter = (key: string, value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
+    
+    // ✅ 4. Reset page to 1 if we are changing filters (not paging)
+    if (key !== "page") {
+      params.set("page", "1");
+    }
+
     if (value === null || value === "all") {
       params.delete(key);
     } else {
@@ -219,6 +253,16 @@ const ShopPage: React.FC = () => {
     }
     const qs = params.toString();
     router.push(`/shop${qs ? `?${qs}` : ""}`);
+  };
+
+  // ✅ 5. Handle Page Change
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    router.push(`/shop?${params.toString()}`);
+    // Scroll to top of grid
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const clearFilters = () => {
@@ -235,82 +279,52 @@ const ShopPage: React.FC = () => {
     inStockOnly ? 1 : 0,
   ].reduce((a, b) => a + b, 0);
 
-
-
   const categoryName = useMemo(() => {
-  if (!selectedCategory || selectedCategory === "all") return "All Collections";
+    if (!selectedCategory || selectedCategory === "all") return "All Collections";
 
-  // Case 1: category filter list exists
-  if (filterData?.categories?.length) {
-    const found = filterData.categories.find(
-      (c: any) => c._id === selectedCategory
+    // Case 1: category filter list exists
+    if (filterData?.categories?.length) {
+      const found = filterData.categories.find(
+        (c: any) => c._id === selectedCategory
+      );
+      if (found?.name) return found.name;
+    }
+
+    // Case 2: fallback from products
+    const productWithCategory = productsRaw.find(
+      p =>
+        typeof p.category === "object" &&
+        p.category?._id === selectedCategory
     );
-    if (found?.name) return found.name;
-  }
 
-  // Case 2: fallback from products
-  const productWithCategory = productsRaw.find(
-    p =>
-      typeof p.category === "object" &&
-      p.category?._id === selectedCategory
-  );
+    if (typeof productWithCategory?.category === "object") {
+      return productWithCategory.category.name;
+    }
 
-  if (typeof productWithCategory?.category === "object") {
-    return productWithCategory.category.name;
-  }
-
-  return "Collection";
-}, [selectedCategory, filterData, productsRaw]);
+    return "Collection";
+  }, [selectedCategory, filterData, productsRaw]);
 
 
   return (
     <div className="min-h-screen bg-rose-50">
-      {/* Hero */}
       {/* ================= SHOP HERO ================= */}
-<div className="relative h-[200px] sm:h-[240px] md:h-[300px] lg:h-[340px] overflow-hidden rounded-b-[32px] shadow-2xl mb-6">
-
-  {/* Background – Luxury Gradient */}
-  <div className="absolute inset-0 bg-gradient-to-br from-rose-900 via-rose-800 to-stone-900" />
-
-  {/* Soft Highlight Layer */}
-  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-white/5" />
-
-  {/* Content */}
-  <div className="relative h-full flex items-end">
-    <div className="w-full px-4 sm:px-6 pb-6 sm:pb-8">
-      <div
-        className="
-          max-w-3xl mx-auto
-          text-center
-          bg-black/30 backdrop-blur-xl
-          border border-white/15
-          rounded-3xl
-          px-5 py-5 sm:px-8 sm:py-7
-          shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)]
-        "
-      >
-        {/* Eyebrow */}
-        <p className="uppercase tracking-[0.25em] text-[10px] sm:text-xs text-rose-200 mb-2">
-          Curated Collection
-        </p>
-
-        {/* Category Name */}
-        <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-tight">
-          {categoryName}
-        </h1>
-
-        {/* Description */}
-        <p className="mt-3 text-xs sm:text-sm md:text-base text-white/90 leading-relaxed max-w-2xl mx-auto">
-          Explore premium{" "}
-          <span className="text-rose-200 font-medium">{categoryName}</span>{" "}
-          designed for weddings, festivities, and refined everyday elegance.
-        </p>
+      <div className="relative h-[200px] sm:h-[240px] md:h-[300px] lg:h-[340px] overflow-hidden rounded-b-[32px] shadow-2xl mb-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-900 via-rose-800 to-stone-900" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-white/5" />
+        <div className="relative h-full flex items-end">
+          <div className="w-full px-4 sm:px-6 pb-6 sm:pb-8">
+            <div className="max-w-3xl mx-auto text-center bg-black/30 backdrop-blur-xl border border-white/15 rounded-3xl px-5 py-5 sm:px-8 sm:py-7 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)]">
+              <p className="uppercase tracking-[0.25em] text-[10px] sm:text-xs text-rose-200 mb-2">Curated Collection</p>
+              <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-tight">
+                {categoryName}
+              </h1>
+              <p className="mt-3 text-xs sm:text-sm md:text-base text-white/90 leading-relaxed max-w-2xl mx-auto">
+                Explore premium <span className="text-rose-200 font-medium">{categoryName}</span> designed for weddings, festivities, and refined everyday elegance.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
-
-
 
       <div className="max-w-7xl mx-auto px-4 pb-12">
         <div className="flex flex-col md:flex-row gap-6">
@@ -336,7 +350,8 @@ const ShopPage: React.FC = () => {
               <div>
                 <div className="flex items-center gap-3">
                   <div className="text-sm text-gray-600">Showing</div>
-                  <div className="text-rose-900 font-semibold">{filtered.length}</div>
+                  {/* ✅ 6. Use totalProductsCount from API, not just the length of the current page */}
+                  <div className="text-rose-900 font-semibold">{totalProductsCount}</div>
                   <div className="text-sm text-gray-500">results</div>
                 </div>
                 <div className="mt-1 text-xs text-gray-500">Curated for weddings & celebrations</div>
@@ -364,17 +379,44 @@ const ShopPage: React.FC = () => {
                 <button onClick={clearFilters} className="mt-4 px-5 py-2 bg-rose-700 text-white rounded-lg">Clear filters</button>
               </div>
             ) : (
-              <div className={`grid grid-cols-2 ${gridCols === 3 ? "md:grid-cols-3" : "md:grid-cols-4"} gap-6`}>
-                {filtered.map((p) => (
-                  <ProductCard key={p._id} product={p} />
-                ))}
-              </div>
+              <>
+                <div className={`grid grid-cols-2 ${gridCols === 3 ? "md:grid-cols-3" : "md:grid-cols-4"} gap-6`}>
+                  {filtered.map((p) => (
+                    <ProductCard key={p._id} product={p} />
+                  ))}
+                </div>
+
+                {/* ✅ 7. Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="mt-12 flex justify-center items-center gap-4">
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="p-3 border rounded-full hover:bg-rose-50 disabled:opacity-50 disabled:cursor-not-allowed transition bg-white text-rose-900 shadow-sm"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    
+                    <span className="text-sm font-semibold text-rose-900">
+                      Page {currentPage} of {totalPages}
+                    </span>
+
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="p-3 border rounded-full hover:bg-rose-50 disabled:opacity-50 disabled:cursor-not-allowed transition bg-white text-rose-900 shadow-sm"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </main>
         </div>
       </div>
 
-      {/* Mobile Drawer (keeps minimal controls) */}
+      {/* Mobile Drawer */}
       {mobileFiltersOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMobileFiltersOpen(false)} />
@@ -396,11 +438,6 @@ const ShopPage: React.FC = () => {
                   })}
                 </div>
               </div>
-
-              {/* <div>
-                <h5 className="text-sm font-medium mb-2">Max price</h5>
-                <input type="range" min={10000} max={70000} step={1000} value={priceRangeLocal} onChange={(e) => setPriceRangeLocal(Number(e.target.value))} className="w-full" />
-              </div> */}
 
               <div>
                 <label className="flex items-center gap-3">

@@ -11,6 +11,8 @@ import "@/models/ProductAddon";
 import "@/models/User";
 import "@/models/Review";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
@@ -20,29 +22,34 @@ export async function GET(req: NextRequest) {
     const size = params.get("size");
     const color = params.get("color");
     const brand = params.get("brand");
+    // 👇 NEW: Get search query
+    const search = params.get("search"); 
 
     const minPrice = Number(params.get("minPrice") || 0);
     const maxPrice = Number(params.get("maxPrice") || 999999999);
-
-    // const inStock = params.get("inStock") === "1";
 
     const page = Number(params.get("page") || 1);
     const limit = Number(params.get("limit") || 20);
     const skip = (page - 1) * limit;
 
     /* ----------------------------------
-       BASE PRODUCT FILTER
+       BASE PRODUCT FILTER (DB Level)
     ----------------------------------- */
     const productFilter: any = { deletedAt: null };
 
-    if (category) productFilter.category = category;
-    if (brand)
-      productFilter.brand = { $regex: brand, $options: "i" };
+    if (category && category !== "all") productFilter.category = category;
+    if (brand) productFilter.brand = { $regex: brand, $options: "i" };
+    
+    // 👇 NEW: Add Name Search Logic
+    if (search) {
+      productFilter.name = { $regex: search, $options: "i" };
+    }
 
     /* ----------------------------------
        FETCH PRODUCTS
     ----------------------------------- */
     const products = await ProductModel.find(productFilter)
+      .sort({ createdAt: -1 })
       .populate("media", "_id secure_url")
       .populate("category", "name slug")
       .lean();
@@ -51,14 +58,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({
         success: true,
         data: [],
-        filters: {
-          categories: [],
-          sizes: [],
-          colors: [],
-          brands: [],
-          priceRange: { min: 0, max: 0 },
-        },
-        meta: { totalProducts: 0, page, limit },
+        filters: { categories: [], sizes: [], colors: [], brands: [], priceRange: { min: 0, max: 0 } },
+        meta: { totalProducts: 0, totalPages: 0, page, limit },
       });
     }
 
@@ -72,82 +73,69 @@ export async function GET(req: NextRequest) {
       deletedAt: null,
     };
 
-    if (size) variantQuery.size = size;
+    if (size && size !== "all") variantQuery.size = size;
     if (color) variantQuery.color = color.toLowerCase();
 
     const variants = await ProductVariantModel.find(variantQuery).lean();
 
     /* ----------------------------------
-       PRICE FILTER + STOCK FILTER
+       PRICE FILTER
     ----------------------------------- */
     const validVariants = variants.filter((v) => {
-      const priceValid =
-        v.sellingPrice >= minPrice && v.sellingPrice <= maxPrice;
-
-      // const stockValid = !inStock || v.inStock === true;
-
-      return priceValid;
+      return v.sellingPrice >= minPrice && v.sellingPrice <= maxPrice;
     });
 
-    const validProductIds = new Set(
-      validVariants.map((v) => v.product.toString())
-    );
+    const validProductIds = new Set(validVariants.map((v) => v.product.toString()));
 
     /* ----------------------------------
-       FINAL PRODUCT LIST
-       - Include products with NO variants also
+       FINAL FILTERING (In Memory)
     ----------------------------------- */
-    const filteredProducts = products
-      .filter((p) => {
-        const productId = p._id.toString();
-
-        // If product has no variants → allow it
-        const hasVariants = variants.some(
-          (v) => v.product.toString() === productId
-        );
-
-        if (!hasVariants) return true;
-
-        // Else include only if at least one valid variant
+    const allFilteredProducts = products.filter((p) => {
+      const productId = p._id.toString();
+      const hasVariants = variants.some((v) => v.product.toString() === productId);
+      
+      if (hasVariants) {
         return validProductIds.has(productId);
-      })
-      .slice(skip, skip + limit);
+      }
+      
+      if (size || color) return false; 
+      
+      return true; 
+    });
+
+    /* ----------------------------------
+       PAGINATION LOGIC
+    ----------------------------------- */
+    const totalProducts = allFilteredProducts.length;
+    const totalPages = Math.ceil(totalProducts / limit);
+    const paginatedProducts = allFilteredProducts.slice(skip, skip + limit);
 
     /* ----------------------------------
        BUILD FILTERS RESPONSE
     ----------------------------------- */
     const allSizes = [...new Set(variants.map((v) => v.size))];
     const allColors = [...new Set(variants.map((v) => v.color))];
-    const allBrands = [
-      ...new Set(products.map((p) => p.brand).filter(Boolean)),
-    ];
+    const allBrands = [...new Set(products.map((p) => p.brand).filter(Boolean))];
 
     const allPrices = variants.map((v) => v.sellingPrice);
     const priceMin = allPrices.length ? Math.min(...allPrices) : 0;
     const priceMax = allPrices.length ? Math.max(...allPrices) : 0;
 
-    const categories = await CategoryModel.find({
-      deletedAt: null,
-    }).select("name slug");
+    const categories = await CategoryModel.find({ deletedAt: null }).select("name slug");
 
-    /* ----------------------------------
-       SEND RESPONSE
-    ----------------------------------- */
     return NextResponse.json({
       success: true,
-      data: filteredProducts,
+      data: paginatedProducts,
       filters: {
         categories,
         sizes: allSizes,
         colors: allColors,
         brands: allBrands,
-        priceRange: {
-          min: priceMin,
-          max: priceMax,
-        },
+        priceRange: { min: priceMin, max: priceMax },
       },
       meta: {
-        totalProducts: filteredProducts.length,
+        totalProducts,
+        totalPages,
         page,
         limit,
       },

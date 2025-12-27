@@ -139,16 +139,21 @@ const PremiumHome: React.FC<PageClientProps> = ({
 
               {/* TEXT OVERLAY */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/15" />
-              <div className="absolute inset-0 flex items-center z-20 pointer-events-none">
-                <div className="max-w-6xl mx-auto px-6 lg:px-12 text-white w-full">
-                  <div className="max-w-xl pointer-events-auto">
-                    <OrnateDivider />
-                    <Link href="/shop" className="inline-block mt-4 px-6 py-3 border border-white/30 text-white rounded-md backdrop-blur-sm hover:bg-white/10 transition">
-                      Explore More
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              {/* TEXT OVERLAY */}
+<div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/15" />
+
+<div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+  <div className="pointer-events-auto flex flex-col items-center text-center">
+    <OrnateDivider />
+    <Link
+      href="/shop"
+      className="mt-6 px-8 py-3 border border-white/30 text-white rounded-md backdrop-blur-sm hover:bg-white/10 transition"
+    >
+      Explore More
+    </Link>
+  </div>
+</div>
+
             </div>
           );
         })}
@@ -253,7 +258,7 @@ const PremiumHome: React.FC<PageClientProps> = ({
                     <div className="p-4">
                       <h3 className="font-medium text-sm leading-tight line-clamp-2">{p.name}</h3>
                       <p className="mt-2 text-gray-900 font-semibold">
-                        {p.sellingPrice.toLocaleString("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 })}
+                        {p.sellingPrice.toLocaleString("en-IN", { style: "currency", currency: "USD", maximumFractionDigits: 0 })}
                       </p>
                     </div>
                   </Link>

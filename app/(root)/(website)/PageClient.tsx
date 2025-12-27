@@ -63,6 +63,11 @@ const heroSlides = [
   { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/3.png", mobileImage: "/assets/images/hero/hero-mobile-3.png", cta: "Discover Sarees" },
 ];
 
+const bannerSlides = [
+  { image: "/assets/images/hero/5.png", link: "/shop" },
+  { image: "/assets/images/hero/1.png", link: "/shop" },
+]
+
 const PremiumHome: React.FC<PageClientProps> = ({ 
   initialLatest, 
   initialPremium, 
@@ -89,7 +94,7 @@ const PremiumHome: React.FC<PageClientProps> = ({
       `}</style>
 
       {/* Top tiny notice */}
-      <div className="bg-black text-white text-xs py-1 text-center">Free Shipping on Orders Above ₹2,999 — Handcrafted in India</div>
+      <div className="bg-black text-white text-xs py-1 text-center">Free Shipping on Orders Above $2,999 — Handcrafted in India</div>
 
       {/* HERO SECTION */}
       <section className="relative h-[55vh] lg:h-[72vh] overflow-hidden">
@@ -153,16 +158,18 @@ const PremiumHome: React.FC<PageClientProps> = ({
       </section>
 
       {/* PROMO BANNER */}
-      <section className="py-12 md:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-10">
-          <div className="relative w-full h-[260px] md:h-[360px] lg:h-[420px] overflow-hidden rounded-xl group">
-            <Image src={banner5} alt="Party Edit" fill sizes="(max-width: 768px) 100vw, 100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
+
+<section className="py-12 md:py-16 bg-white">
+  <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-10">
+      {bannerSlides.map((slide, idx) => (
+          <div  className="relative w-full h-[260px] md:h-[360px] lg:h-[420px] overflow-hidden rounded-xl group" key={idx}>
+            <Image src={slide.image} alt="Party Edit" fill sizes="(max-width: 768px) 100vw, 100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
           </div>
-          <div className="relative w-full h-[260px] md:h-[360px] lg:h-[420px] overflow-hidden rounded-xl group">
-            <Image src={banner1} alt="Sangeet Edit" fill sizes="(max-width: 768px) 100vw, 100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
-          </div>
-        </div>
+      )
+      )}
+      </div>
       </section>
+      
 
       {/* SHOP BY CATEGORY (Static) */}
       <section className="py-10 bg-rose-50/50">
@@ -276,8 +283,8 @@ const PremiumHome: React.FC<PageClientProps> = ({
                 <div className="p-4" onMouseEnter={() => setHoveredProduct(p._id)} onMouseLeave={() => setHoveredProduct(null)}>
                   <h3 className="font-medium text-sm line-clamp-2">{p.name}</h3>
                   <div className="flex gap-3 mt-2 items-baseline">
-                    <div className="text-lg font-bold text-rose-900">₹{p.sellingPrice}</div>
-                    <div className="text-sm text-gray-400 line-through">₹{p.mrp}</div>
+                    <div className="text-lg font-bold text-rose-900">${p.sellingPrice}</div>
+                    <div className="text-sm text-gray-400 line-through">${p.mrp}</div>
                   </div>
                 </div>
               </article>

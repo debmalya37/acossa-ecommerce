@@ -111,7 +111,7 @@ export default function Filter({
       {/* CATEGORY */}
       <div className="mb-4">
         <h4 className="text-sm font-medium text-gray-700 mb-2">Category</h4>
-        <div className="flex flex-col gap-2 max-h-40 overflow-auto pr-1">
+        <div className="flex flex-col gap-2 max-h-40 overflow-auto pr-1 text-black">
           <button
             onClick={() => updateFilter("category", "all")}
             className={`text-left px-2 py-1 rounded ${!selectedCategory || selectedCategory === "all" ? "bg-rose-100 text-rose-800" : "hover:bg-gray-50"}`}

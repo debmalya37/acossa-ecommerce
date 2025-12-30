@@ -417,40 +417,87 @@ const ShopPage: React.FC = () => {
       </div>
 
       {/* Mobile Drawer */}
+      {/* ================= MOBILE FILTER DRAWER ================= */}
       {mobileFiltersOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileFiltersOpen(false)} />
-          <div className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white shadow-2xl p-5 overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold text-lg flex items-center gap-2"> Filters</h4>
-              <button onClick={() => setMobileFiltersOpen(false)} className="p-2 rounded-full hover:bg-gray-100"><X /></button>
+        <div className="fixed inset-0 z-[60] md:hidden font-sans">
+          {/* Backdrop (Darkened & Blurred) */}
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+            onClick={() => setMobileFiltersOpen(false)} 
+          />
+
+          {/* Drawer Container */}
+          <div className="absolute right-0 top-0 bottom-0 w-full max-w-[85vw] sm:max-w-sm bg-white text-gray-900 shadow-2xl flex flex-col transform transition-transform duration-300">
+            
+            {/* 1. Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+              <h4 className="font-semibold text-lg text-gray-900 flex items-center gap-2">
+                <SlidersHorizontal size={18} className="text-rose-600" /> 
+                Filters
+              </h4>
+              <button 
+                onClick={() => setMobileFiltersOpen(false)} 
+                className="p-2 -mr-2 text-gray-500 hover:bg-gray-100 rounded-full transition"
+              >
+                <X size={20} />
+              </button>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <h5 className="text-sm font-medium mb-2">Size</h5>
-                <div className="flex flex-wrap gap-2">
-                  {(["FS","XS","S","M","L","XL","XXL"] as Size[]).map((s) => {
-                    const active = selectedSize === s;
-                    return (
-                      <button key={s} onClick={() => updateFilter("size", active ? "all" : s)} className={`px-3 py-1 rounded-full text-sm ${active ? "bg-rose-900 text-white" : "bg-white border"}`}>{SIZE_LABEL[s]}</button>
-                    );
-                  })}
-                </div>
-              </div>
+            {/* 2. Scrollable Content (Reuse the Filter Component) */}
+            <div className="flex-1 overflow-y-auto p-5 space-y-6">
+              {/* We reuse the exact same Filter component from Desktop Sidebar */}
+              {/* This ensures Categories, Price, Brands, etc all show up on mobile */}
+              <Filter
+                filters={filterData}
+                selectedCategory={selectedCategory}
+                selectedSize={selectedSize}
+                selectedColor={selectedColor}
+                selectedBrand={selectedBrand}
+                selectedFabric={selectedFabric}
+                selectedOccasion={selectedOccasion}
+                selectedMaxPrice={selectedMaxPrice ?? null}
+                updateFilter={updateFilter}
+                clearFilters={clearFilters}
+              />
 
-              <div>
-                <label className="flex items-center gap-3">
-                  <input type="checkbox" checked={inStockOnly} onChange={(e) => updateFilter("instock", e.target.checked ? "1" : null)} className="w-4 h-4" />
-                  <span className="text-sm">In stock only</span>
+              {/* Extra Mobile Specific Options (like In Stock) if Filter component doesn't have them */}
+              <div className="pt-4 border-t border-gray-100">
+                <h5 className="text-sm font-medium text-gray-900 mb-3">Availability</h5>
+                <label className="flex items-center gap-3 p-3 border rounded-xl hover:border-rose-300 transition cursor-pointer group">
+                  <div className="relative flex items-center">
+                    <input 
+                      type="checkbox" 
+                      checked={inStockOnly} 
+                      onChange={(e) => updateFilter("instock", e.target.checked ? "1" : null)} 
+                      className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-gray-300 transition-all checked:border-rose-600 checked:bg-rose-600"
+                    />
+                     <div className="pointer-events-none absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-700 group-hover:text-rose-700 font-medium">In Stock Only</span>
                 </label>
               </div>
+            </div>
 
-              <div className="flex gap-2">
-                <button onClick={() => { clearFilters(); setMobileFiltersOpen(false); }} className="flex-1 py-2 border rounded-lg">Clear</button>
-                <button onClick={() => setMobileFiltersOpen(false)} className="flex-1 py-2 bg-rose-700 text-white rounded-lg">Show {filtered.length} results</button>
+            {/* 3. Sticky Footer Buttons */}
+            <div className="p-4 border-t border-gray-100 bg-white pb-safe">
+              <div className="flex gap-3">
+                <button 
+                  onClick={() => { clearFilters(); setMobileFiltersOpen(false); }} 
+                  className="flex-1 py-3 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition active:scale-[0.98]"
+                >
+                  Clear All
+                </button>
+                <button 
+                  onClick={() => setMobileFiltersOpen(false)} 
+                  className="flex-[2] py-3 bg-rose-600 text-white font-medium rounded-xl shadow-lg shadow-rose-200 hover:bg-rose-700 transition active:scale-[0.98]"
+                >
+                  Show {filtered.length} Items
+                </button>
               </div>
             </div>
+
           </div>
         </div>
       )}

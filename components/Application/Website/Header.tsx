@@ -47,17 +47,18 @@ const Header = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const base = process.env.NEXT_PUBLIC_BASE_URL;
-        const { data } = await axios.get(`${base}/api/category?size=100`);
+        // FIX: Remove 'base' and use relative path
+        const { data } = await axios.get(`/api/category?size=100`);
 
-        if (data.success) {
+        // FIX: Add safety check 'Array.isArray(data.data)' to prevent crash if API returns bad data
+        if (data.success && Array.isArray(data.data)) {
           const allCats = data.data;
           setSareeCategories(allCats.filter((c: any) => c.slug?.toLowerCase().includes("saree")));
           setLehengaCategories(allCats.filter((c: any) => c.slug?.toLowerCase().includes("lehenga")));
           setSuitCategories(allCats.filter((c: any) => c.slug?.toLowerCase().includes("suit") || c.slug?.toLowerCase().includes("set")));
         }
       } catch (error) {
-        console.log("Category fetch error:", error);
+        console.error("Category fetch error:", error);
       }
     };
     fetchCategories();
@@ -129,7 +130,9 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b">
+    <header 
+    className="fixed top-0 left-0 right-0 z-50 bg-background border-b text-foreground transition-colors auto-dark-header"
+  >
       {/* ---------- Top Bar ---------- */}
       <div className="bg-black text-white text-xs py-2 overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap gap-10 px-10">
@@ -151,8 +154,22 @@ const Header = () => {
           </button>
 
           {/* Logo */}
+          {/* Logo */}
           <Link href="/">
-            <img src="/assets/images/logo/acossa.jpg" className="h-16 md:h-24 object-contain" alt="ACOSSA" />
+            <picture>
+              {/* 1. Dark Mode Logo: Browser loads this ONLY if system is Dark */}
+              <source 
+                srcSet="/assets/images/logo/logo-dark.png" 
+                media="(prefers-color-scheme: dark)" 
+              />
+              
+              {/* 2. Default (Light Mode) Logo */}
+              <img 
+                src="/assets/images/logo/acossa.jpg" 
+                className="h-16 md:h-24 object-contain" 
+                alt="ACOSSA" 
+              />
+            </picture>
           </Link>
 
           {/* Desktop Nav (Hidden when search is open) */}
@@ -166,7 +183,7 @@ const Header = () => {
                     <button type="button" className="flex items-center gap-1 hover:text-rose-600 transition">
                       {nav.label} <ChevronDown size={14} />
                     </button>
-                    <div className="absolute left-0 top-full mt-3 w-60 bg-white border shadow-xl rounded-md opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
+                    <div className="absolute left-0 top-full mt-3 w-60 bg-background border shadow-xl rounded-md opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
                       {nav.children.map((child) => (
                         <Link key={child.label} href={child.href} className="block px-4 py-2.5 text-sm hover:bg-rose-50 hover:text-rose-600 transition">
                           {child.label}
@@ -210,7 +227,7 @@ const Header = () => {
         {/* EXPANDABLE SEARCH BAR   */}
         {/* ======================= */}
         <div 
-          className={`absolute inset-0 bg-white z-40 flex items-center justify-center transition-all duration-300 ${
+          className={`absolute inset-0 bg-background z-40 flex items-center justify-center transition-all duration-300 ${
             searchOpen ? "translate-y-0 opacity-100 visible" : "-translate-y-5 opacity-0 invisible pointer-events-none"
           }`}
         >
@@ -232,7 +249,7 @@ const Header = () => {
 
             {/* SUGGESTIONS DROPDOWN (YouTube Style) */}
             {(searchQuery.length > 2 || searchLoading) && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white shadow-2xl rounded-b-xl border border-t-0 overflow-hidden z-50">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-background shadow-2xl rounded-b-xl border border-t-0 overflow-hidden z-50">
                 {searchLoading ? (
                   <div className="p-4 text-center text-gray-500 flex items-center justify-center gap-2">
                     <Loader2 className="animate-spin w-4 h-4" /> Searching...
@@ -249,7 +266,7 @@ const Header = () => {
                            onClick={() => { setSearchOpen(false); setSuggestions([]); }}
                          >
                            <Search size={14} className="text-gray-400 min-w-[14px]" />
-                           <span className="text-sm font-medium text-gray-700 line-clamp-1">{product.name}</span>
+                           <span className="text-sm font-medium text-foreground line-clamp-1">{product.name}</span>
                          </Link>
                       </li>
                     ))}
@@ -266,33 +283,59 @@ const Header = () => {
       </div>
 
       {/* Mobile Menu */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t shadow max-h-[80vh] overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 h-screen bg-background border-t shadow-xl overflow-y-auto pb-20 z-[60]">
           {navLinks.map((nav) => (
-            <div key={nav.label} className="border-b">
+            <div key={nav.label} className="border-b border-gray-100 dark:border-gray-800">
               {nav.children ? (
                 <>
-                  <button className="w-full px-4 py-3 flex justify-between items-center" onClick={() => setActiveDropdown(activeDropdown === nav.label ? null : nav.label)}>
-                    {nav.label} <ChevronDown size={18} />
+                  <button 
+                    className="w-full px-6 py-4 flex justify-between items-center text-left font-medium" 
+                    onClick={() => setActiveDropdown(activeDropdown === nav.label ? null : nav.label)}
+                  >
+                    {nav.label} 
+                    <ChevronDown size={18} className={`transition-transform ${activeDropdown === nav.label ? 'rotate-180' : ''}`} />
                   </button>
+                  
+                  {/* Dropdown Content */}
                   {activeDropdown === nav.label && (
-                    <div className="bg-gray-50">
-                      {nav.children.map((child) => (
-                        <Link key={child.label} href={child.href} className="block px-6 py-2 text-sm hover:text-rose-600" onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}>
-                          {child.label}
-                        </Link>
-                      ))}
+                    <div className="bg-gray-50 dark:bg-zinc-900/50 px-6 py-2 space-y-3 pb-4">
+                      {nav.children.length > 0 ? (
+                         nav.children.map((child) => (
+                          <Link 
+                            key={child.label} 
+                            href={child.href} 
+                            className="block text-sm text-gray-600 dark:text-gray-300 hover:text-rose-600 py-1" 
+                            onClick={() => { setMobileMenuOpen(false); setActiveDropdown(null); }}
+                          >
+                            {child.label}
+                          </Link>
+                        ))
+                      ) : (
+                        <p className="text-xs text-gray-400">No categories found</p>
+                      )}
                     </div>
                   )}
                 </>
               ) : (
-                <Link href={nav.href!} className="block px-4 py-3" onClick={() => setMobileMenuOpen(false)}>
+                <Link 
+                  href={nav.href!} 
+                  className="block px-6 py-4 font-medium" 
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   {nav.label}
                 </Link>
               )}
             </div>
           ))}
-          {auth && <button onClick={handleLogout} className="w-full text-left px-4 py-3 text-red-600 border-b">Logout</button>}
+          
+          {/* Auth Button for Mobile */}
+          {auth && (
+             <button onClick={handleLogout} className="w-full text-left px-6 py-4 text-red-600 font-medium border-b dark:border-gray-800">
+               Logout
+             </button>
+          )}
         </div>
       )}
     </header>

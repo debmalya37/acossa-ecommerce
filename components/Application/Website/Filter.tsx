@@ -14,7 +14,7 @@ const SIZE_LABEL: Record<Size, string> = {
   // XXL: "XXL",
 };
 
-type Category = { _id?: string; name?: string; slug?: string };
+type Category = { _id?: string; name?: string; slug: string };
 type FiltersShape = {
   categories?: Category[];
   sizes?: string[];
@@ -109,26 +109,40 @@ export default function Filter({
       </div>
 
       {/* CATEGORY */}
-      <div className="mb-4">
-        <h4 className="text-sm font-medium text-gray-700 mb-2">Category</h4>
-        <div className="flex flex-col gap-2 max-h-40 overflow-auto pr-1 text-black">
-          <button
-            onClick={() => updateFilter("category", "all")}
-            className={`text-left px-2 py-1 rounded ${!selectedCategory || selectedCategory === "all" ? "bg-rose-100 text-rose-800" : "hover:bg-gray-50"}`}
-          >
-            All
-          </button>
-          {categories.map((c) => (
-            <button
-              key={String(c._id ?? c.slug ?? c.name)}
-              onClick={() => updateFilter("category", String(c._id ?? c.slug ?? c.name))}
-              className={`text-left px-2 py-1 rounded ${selectedCategory === String(c._id ?? c.slug ?? c.name) ? "bg-rose-100 text-rose-800" : "hover:bg-gray-50"}`}
-            >
-              {c.name}
-            </button>
-          ))}
-        </div>
-      </div>
+    
+<div className="mb-4">
+  <h4 className="text-sm font-medium text-gray-700 mb-2">Category</h4>
+
+  <div className="flex flex-col gap-2 max-h-40 overflow-auto pr-1">
+    {/* ALL */}
+    <button
+      onClick={() => updateFilter("category", "all")}
+      className={`text-left px-2 py-1 rounded ${
+        !selectedCategory || selectedCategory === "all"
+          ? "bg-rose-100 text-rose-800"
+          : "hover:bg-gray-50"
+      }`}
+    >
+      All
+    </button>
+
+    {/* CATEGORY LIST */}
+    {categories.map((c) => (
+      <button
+        key={c.slug}
+        onClick={() => updateFilter("category", c.slug)}
+        className={`text-left px-2 py-1 rounded ${
+          selectedCategory === c.slug
+            ? "bg-rose-100 text-rose-800"
+            : "hover:bg-gray-50"
+        }`}
+      >
+        {c.name}
+      </button>
+    ))}
+  </div>
+</div>
+
 
       {/* SIZES */}
       <div className="mb-4">

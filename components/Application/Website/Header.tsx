@@ -113,15 +113,15 @@ const Header = () => {
     { label: "Shop", href: "/shop" },
     {
       label: "Sarees",
-      children: sareeCategories.map((c) => ({ label: c.name, href: `/shop?category=${c._id}` })),
+      children: sareeCategories.map((c) => ({ label: c.name, href: `/shop?category=${c.slug}` })),
     },
     {
       label: "Lehengas",
-      children: lehengaCategories.map((c) => ({ label: c.name, href: `/shop?category=${c._id}` })),
+      children: lehengaCategories.map((c) => ({ label: c.name, href: `/shop?category=${c.slug}` })),
     },
     {
       label: "Suits & Sets",
-      children: suitCategories.map((c) => ({ label: c.name, href: `/shop?category=${c._id}` })),
+      children: suitCategories.map((c) => ({ label: c.name, href: `/shop?category=${c.slug}` })),
     },
     { label: "New Arrivals", href: "/shop" },
     { label: "Wholesale", href: "/wholesaler" },

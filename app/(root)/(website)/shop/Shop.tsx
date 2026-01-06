@@ -37,7 +37,9 @@ type ProductFromAPI = {
   mrp: number;
   sellingPrice: number;
   discountPercentage?: number;
-  category?: { _id?: string; name?: string } | string;
+  category?: {
+    slug: string; _id?: string; name?: string 
+} | string;
   brand?: string;
   fabric?: string;
   occasion?: string;
@@ -280,29 +282,30 @@ const ShopPage: React.FC = () => {
   ].reduce((a, b) => a + b, 0);
 
   const categoryName = useMemo(() => {
-    if (!selectedCategory || selectedCategory === "all") return "All Collections";
+  if (!selectedCategory || selectedCategory === "all") {
+    return "All Collections";
+  }
 
-    // Case 1: category filter list exists
-    if (filterData?.categories?.length) {
-      const found = filterData.categories.find(
-        (c: any) => c._id === selectedCategory
-      );
-      if (found?.name) return found.name;
-    }
+  // 1️⃣ From filter metadata
+  const fromFilters = filterData?.categories?.find(
+    (c: any) => c.slug === selectedCategory
+  );
+  if (fromFilters?.name) return fromFilters.name;
 
-    // Case 2: fallback from products
-    const productWithCategory = productsRaw.find(
-      p =>
-        typeof p.category === "object" &&
-        p.category?._id === selectedCategory
-    );
+  // 2️⃣ Fallback from products
+  const fromProduct = productsRaw.find(
+    (p) =>
+      typeof p.category === "object" &&
+      p.category?.slug === selectedCategory
+  );
 
-    if (typeof productWithCategory?.category === "object") {
-      return productWithCategory.category.name;
-    }
+  if (typeof fromProduct?.category === "object") {
+    return fromProduct.category.name;
+  }
 
-    return "Collection";
-  }, [selectedCategory, filterData, productsRaw]);
+  return "Collection";
+}, [selectedCategory, filterData, productsRaw]);
+
 
 
   return (

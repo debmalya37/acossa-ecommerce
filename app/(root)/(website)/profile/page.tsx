@@ -121,7 +121,7 @@ const Profile = () => {
         </div>
 
         <div>
-        <Form {...form}>
+        <Form {...(form as any)}>
         <form className="grid md:grid-cols-2 grid-cols-1 gap-5 space-y-8" onSubmit={form.handleSubmit(updateProfile)} >
             <div className="md:col-span-2 col-span-1 flex justify-center items-center">
                 <Dropzone onDrop={acceptedFiles => handleFileSelection(acceptedFiles)}>

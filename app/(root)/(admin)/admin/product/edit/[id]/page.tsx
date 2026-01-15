@@ -237,7 +237,7 @@ export default function EditProduct() {
         </CardHeader>
 
         <CardContent className="pb-5">
-          <Form {...form}>
+          <Form {...(form as any)}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
                 {/* NAME */}

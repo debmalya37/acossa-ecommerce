@@ -112,7 +112,7 @@ const result = await res.json();
             </Alert>
           )}
 
-          <Form {...form}>
+          <Form {...(form as any)}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 
               {/* Email Field */}

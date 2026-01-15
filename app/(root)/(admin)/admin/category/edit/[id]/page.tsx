@@ -120,7 +120,7 @@ const EditCategory = () => {
         </CardHeader>
 
         <CardContent>
-          <Form {...form}>
+          <Form {...(form as any)}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 
               {/* NAME */}

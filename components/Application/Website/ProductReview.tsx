@@ -217,7 +217,7 @@ console.log("review data", data);
             <>
             <h4 className='text-xl font-semibold'>Write a Review</h4>
 
-          <Form {...form}>
+          <Form {...(form as any)}>
             <form onSubmit={form.handleSubmit(handleReviewSubmit)} className="space-y-8">
 
             <div className="mb-5">

@@ -49,23 +49,27 @@ const OrnateDivider: React.FC<{ className?: string }> = ({ className }) => (
 
 // ... (Keep staticCategories and heroSlides arrays as they were) ...
 const staticCategories = [
-  { id: 1, label: "SUIT SETS", image: "https://womenplusindia.com/cdn/shop/files/3861_III.jpg?v=1683112670&width=850", link: "/shop?category=suit-sets" },
-  { id: 2, label: "SAREES", image: "https://medias.utsavfashion.com/media/catalog/product/cache/1/image/500x/040ec09b1e35df139433887a97daa66f/e/m/embroidered-border-art-silk-t-saree-in-light-beige-v1-ssha1563.jpg", link: "/shop" },
+  { id: 1, label: "SUIT SETS", image: "https://womenplusindia.com/cdn/shop/files/3861_III.jpg?v=1683112670&width=850", link: "/shop?category=salwar-suit" },
+  { id: 2, label: "SAREES", image: "https://medias.utsavfashion.com/media/catalog/product/cache/1/image/500x/040ec09b1e35df139433887a97daa66f/e/m/embroidered-border-art-silk-t-saree-in-light-beige-v1-ssha1563.jpg", link: "/shop?category=party-wear-saree" },
   { id: 3, label: "KURTAS", image: "https://cdn.shopify.com/s/files/1/0572/5555/9212/files/BHKS709_5_e0daa2dc-abd0-458a-85f5-55013ada2546.jpg?v=1753699167", link: "/shop" },
-  { id: 4, label: "LEHENGAS", image: "https://www.mymoledro.com/cdn/shop/files/4-_2_800x.jpg?v=1751284778", link: "/shop" },
+  { id: 4, label: "LEHENGAS", image: "https://www.mymoledro.com/cdn/shop/files/4-_2_800x.jpg?v=1751284778", link: "/shop?category=bridesmaid-lehenga" },
   { id: 5, label: "GOWNS", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1983&auto=format&fit=crop", link: "/shop" },
   { id: 6, label: "CO-ORDS", image: "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?q=80&w=1934&auto=format&fit=crop", link: "/shop" },
 ];
 
 const heroSlides = [
-  { title: "Bridal Elegance", subtitle: "Timeless · Handcrafted · Heirloom", description: "Curated bridal sarees and lehengas with exquisite zardozi.", image: "/assets/images/hero/1.png", mobileImage: "/assets/images/hero/hero-mobile-1.png", cta: "Explore Bridal" },
-  { title: "Festive Lehengas", subtitle: "Festive · Statement · Luxe", description: "Statement lehengas for your grand celebrations.", image: "/assets/images/hero/2.png", mobileImage: "/assets/images/hero/hero-mobile-2.png", cta: "Shop Lehengas" },
-  { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/3.png", mobileImage: "/assets/images/hero/hero-mobile-3.png", cta: "Discover Sarees" },
+  // { title: "Bridal Elegance", subtitle: "Timeless · Handcrafted · Heirloom", description: "Curated bridal sarees and lehengas with exquisite zardozi.", image: "/assets/images/hero/7.png", mobileImage: "/assets/images/hero/hero-mobile-1.png", cta: "Explore Bridal" },
+  { title: "Festive Lehengas", subtitle: "Festive · Statement · Luxe", description: "Statement lehengas for your grand celebrations.", image: "/assets/images/hero/4.png", mobileImage: "/assets/images/hero/hero-mobile-2.png", cta: "Shop Lehengas" },
+  { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/5.png", mobileImage: "/assets/images/hero/hero-mobile-3.png", cta: "Discover Sarees" },
+  { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/6.png", mobileImage: "/assets/images/hero/hero-mobile-1.png", cta: "Discover Sarees" },
+  { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/7.png", mobileImage: "/assets/images/hero/hero-mobile-2.png", cta: "Discover Sarees" },
 ];
 
 const bannerSlides = [
   { image: "/assets/images/hero/5.png", link: "/shop" },
-  { image: "/assets/images/hero/1.png", link: "/shop" },
+  { image: "/assets/images/hero/4.png", link: "/shop" },
+  { image: "/assets/images/hero/6.png", link: "/shop" },
+  // { image: "/assets/images/hero/7.png", link: "/shop" },
 ]
 
 const PremiumHome: React.FC<PageClientProps> = ({ 
@@ -97,7 +101,7 @@ const PremiumHome: React.FC<PageClientProps> = ({
       <div className="bg-black text-white text-xs py-1 text-center">Free Shipping on Orders Above $2,999 — Handcrafted in India</div>
 
       {/* HERO SECTION */}
-      <section className="relative h-[55vh] lg:h-[72vh] overflow-hidden">
+      <section className="relative h-[55vh] lg:h-[72vh] overflow-hidden mt-5">
         {heroSlides.map((slide, idx) => {
           const isActive = idx === currentSlide;
           // ✅ LCP Optimization: Load first image immediately
@@ -124,21 +128,23 @@ const PremiumHome: React.FC<PageClientProps> = ({
               </div>
 
               {/* DESKTOP IMAGE */}
-              <div className="hidden lg:block absolute inset-0">
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  priority={isLCP}
-                  sizes="100vw"
-                  className="object-cover brightness-90"
-                  placeholder="blur"
-                  blurDataURL="/assets/images/hero/blur-placeholder.png"
-                />
-              </div>
+              {/* DESKTOP IMAGE */}
+<div className="hidden lg:block absolute inset-0">
+  <Image
+    src={slide.image}
+    alt={slide.title}
+    fill
+    priority={isLCP}
+    sizes="100vw"
+    className="object-contain bg-black brightness-90"
+    placeholder="blur"
+    blurDataURL="/assets/images/hero/blur-placeholder.png"
+  />
+</div>
 
-              {/* TEXT OVERLAY */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/15" />
+{/* TEXT OVERLAY */}
+<div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/15" />
+
               {/* TEXT OVERLAY */}
 <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/15" />
 
@@ -349,7 +355,8 @@ const PremiumHome: React.FC<PageClientProps> = ({
             <Link href={`/blog/${blog.slug}`}>
 
               <div className="bg-rose-100 flex items-center justify-center h-48">
-                <img
+                <Image
+                fill
                   src={blog.coverImage}
                   alt={blog.title}
                   className="max-h-full object-contain"

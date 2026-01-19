@@ -336,18 +336,38 @@ export default function EditProduct() {
 
                 {/* DESCRIPTION */}
                 <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description *</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter description" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+  control={form.control}
+  name="description"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Description *</FormLabel>
+      <FormControl>
+        <textarea
+          {...field}
+          rows={5}
+          placeholder="Enter description (press Enter for new line)"
+          className="
+            w-full
+            rounded-md
+            border
+            border-input
+            bg-background
+            px-3 py-2
+            text-sm
+            ring-offset-background
+            focus-visible:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-ring
+            focus-visible:ring-offset-2
+            resize-y
+          "
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
               </div>
 
               {/* MEDIA */}

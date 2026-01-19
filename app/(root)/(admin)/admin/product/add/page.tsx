@@ -26,6 +26,7 @@ import Select from '@/components/Select'
 import Editor from '@/components/Application/Admin/Editor'
 import ModalMedia from '@/components/Application/Admin/ModalMedia'
 import Image from 'next/image'
+import { Textarea } from "@/components/ui/textarea";
 
 interface MediaItem {
   _id: string;
@@ -307,18 +308,25 @@ const AddProduct = () => {
                                     )}
                                 />
                                 <FormField
-                                    control={form.control}
-                                    name="description"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Description <span className='text-red-500'>*</span></FormLabel>
-                                            <FormControl>
-                                                <Input type={"text"} placeholder="Enter description" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+  control={form.control}
+  name="description"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>
+        Description <span className="text-red-500">*</span>
+      </FormLabel>
+      <FormControl>
+        <Textarea
+          placeholder="Enter product description (use Enter for new lines)"
+          className="min-h-[120px] resize-y"
+          {...field}
+        />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
                             </div>
 
                             <div className='md:col-span-2 border border-dashed rounded p-5 text-center mt-5'>

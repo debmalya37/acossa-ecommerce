@@ -322,7 +322,10 @@ console.log("cart now =", cart);
         </div>
 
 
-        <div className='line-clamp-3' dangerouslySetInnerHTML={{__html: decode(product.description)}}></div>
+        <div className="whitespace-pre-line line-clamp-3 text-gray-700">
+  {product.description}
+</div>
+
         
 
     <div className='mt-5 overflow-auto'>
@@ -481,11 +484,14 @@ console.log("cart now =", cart);
       {/* ================= PRODUCT DETAILS ACCORDION ================= */}
 <div className="mb-20 bg-[#faf3e8] rounded-lg px-5">
   <AccordionItem
-    title="Description"
-    content={
-      <div dangerouslySetInnerHTML={{ __html: decode(product.description) }} />
-    }
-  />
+  title="Description"
+  content={
+    <div className="whitespace-pre-line text-gray-700 leading-relaxed">
+      {product.description}
+    </div>
+  }
+/>
+
 
   <AccordionItem
     title="Components"

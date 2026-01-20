@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, RegisterSchema } from "@/lib/validations/registerSchema";
-import { signIn } from "next-auth/react"; // ✅ Add this import
+
 import {
   Form, FormControl, FormField, FormItem,
   FormLabel, FormMessage
@@ -57,21 +57,25 @@ const onSubmit = async (data: RegisterSchema) => {
       return;
     }
 
-    // ✅ If registration successful → auto login through NextAuth
-    const loginRes = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
+   const loginRes = await fetch("/api/auth/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    email: data.email,
+    password: data.password,
+  }),
+});
 
-    if (loginRes?.error) {
-      setServerMsg({
-        type: "error",
-        message: "Account created but login failed. Please login manually.",
-      });
-      setTimeout(() => window.location.href = "/auth/login", 1500);
-      return;
-    }
+const loginResult = await loginRes.json();
+
+if (!loginResult.success) {
+  setServerMsg({
+    type: "error",
+    message: loginResult.error || "Login failed",
+  });
+  return;
+}
+
 
     setServerMsg({
       type: "success",

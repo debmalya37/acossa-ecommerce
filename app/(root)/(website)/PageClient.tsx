@@ -62,15 +62,27 @@ const heroSlides = [
   { title: "Festive Lehengas", subtitle: "Festive · Statement · Luxe", description: "Statement lehengas for your grand celebrations.", image: "/assets/images/hero/4.png", mobileImage: "/assets/images/hero/hero-mobile-2.png", cta: "Shop Lehengas" },
   { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/5.png", mobileImage: "/assets/images/hero/hero-mobile-3.png", cta: "Discover Sarees" },
   { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/6.png", mobileImage: "/assets/images/hero/hero-mobile-1.png", cta: "Discover Sarees" },
-  { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/7.png", mobileImage: "/assets/images/hero/hero-mobile-2.png", cta: "Discover Sarees" },
+  { title: "Designer Sarees", subtitle: "Modern Drapes, Heritage Weaves", description: "Contemporary silhouettes with rich handwork.", image: "/assets/images/hero/7.png", mobileImage: "/assets/images/hero/hero-mobile-4.png", cta: "Discover Sarees" },
 ];
 
 const bannerSlides = [
-  { image: "/assets/images/hero/5.png", link: "/shop" },
-  { image: "/assets/images/hero/4.png", link: "/shop" },
-  { image: "/assets/images/hero/6.png", link: "/shop" },
-  // { image: "/assets/images/hero/7.png", link: "/shop" },
-]
+  {
+    desktopImage: "/assets/images/hero/8.png",
+    mobileImage: "/assets/images/hero/hero-mobile-8.png",
+    link: "/shop",
+  },
+  {
+    desktopImage: "/assets/images/hero/4.png",
+    mobileImage: "/assets/images/hero/hero-mobile-4.png",
+    link: "/shop",
+  },
+  {
+    desktopImage: "/assets/images/hero/5.png",
+    mobileImage: "/assets/images/hero/hero-mobile-3.png",
+    link: "/shop",
+  },
+];
+
 
 const PremiumHome: React.FC<PageClientProps> = ({ 
   initialLatest, 
@@ -172,14 +184,42 @@ const PremiumHome: React.FC<PageClientProps> = ({
 
 <section className="py-12 md:py-16 bg-white">
   <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-10">
-      {bannerSlides.map((slide, idx) => (
-          <div  className="relative w-full h-[260px] md:h-[360px] lg:h-[420px] overflow-hidden rounded-xl group" key={idx}>
-            <Image src={slide.image} alt="Party Edit" fill sizes="(max-width: 768px) 100vw, 100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
+    {bannerSlides.map((slide, idx) => (
+      <Link href={slide.link} key={idx}>
+        <div className="relative w-full overflow-hidden rounded-xl bg-black/5 mb-1">
+
+          {/* MOBILE IMAGE */}
+          <div className="relative block md:hidden w-full">
+            <Image
+              src={slide.mobileImage}
+              alt="Promotional Banner"
+              width={1200}
+              height={1600}
+              sizes="100vw"
+              className="w-full h-auto object-contain"
+              priority={idx === 0}
+            />
           </div>
-      )
-      )}
-      </div>
-      </section>
+
+          {/* DESKTOP IMAGE */}
+          <div className="relative hidden md:block w-full">
+            <Image
+              src={slide.desktopImage}
+              alt="Promotional Banner"
+              width={2400}
+              height={900}
+              sizes="(max-width: 768px) 100vw, 100vw"
+              className="w-full h-auto object-contain transition-transform duration-700 hover:scale-[1.02]"
+              priority={idx === 0}
+            />
+          </div>
+
+        </div>
+      </Link>
+    ))}
+  </div>
+</section>
+
       
 
       {/* SHOP BY CATEGORY (Static) */}

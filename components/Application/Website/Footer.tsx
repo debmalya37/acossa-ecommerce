@@ -48,8 +48,8 @@ const Footer = () => {
         <div>
           <h2 className="text-3xl font-bold tracking-wide">ACOSSA</h2>
           <p className="mt-3 text-sm text-rose-100 leading-relaxed max-w-xs">
-            Handcrafted designer sarees & bridal couture — curated with elegance 
-            and rooted in India’s textile heritage.
+            Premium Indian ethnic wear exporter offering handcrafted designer sarees, bridal lehengas, and couture outfits for global buyers. 
+            Rooted in India’s rich textile heritage.
           </p>
 
           {/* Social */}
@@ -123,6 +123,39 @@ const Footer = () => {
           </ul>
         </div>
       </div>
+
+      {/* PAYMENT TRUST SECTION */}
+<div className="relative z-10 mt-12">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="bg-white/95 backdrop-blur rounded-2xl shadow-lg p-6 md:p-8 text-center">
+
+      <h4 className="text-lg md:text-xl font-semibold text-gray-900">
+        100% Safe & Secure International Payments
+      </h4>
+
+      <p className="mt-3 text-sm md:text-base text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        We are an export-only brand and accept international payments via Razorpay, 
+        supporting all major global Credit & Debit Cards and international Netbanking 
+        for overseas orders.
+      </p>
+      <p className="sr-only">
+Secure international payments via Razorpay, Visa, Mastercard, American Express, and global net banking.
+</p>
+
+
+      <div className="mt-6 flex justify-center">
+        <img
+          src="https://community.squareup.com/t5/image/serverpage/image-id/47303iF399B011A9A896B3/image-size/large?v=v2&px=999"
+          alt="Accepted Payment Methods"
+          className="max-w-full h-auto object-contain"
+          loading="lazy"
+        />
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
       {/* BOTTOM BAR */}
       <div className="relative z-10 mt-12 border-t border-rose-800/50 text-white pt-6 bg-gray-950/70">

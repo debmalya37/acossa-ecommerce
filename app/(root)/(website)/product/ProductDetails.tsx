@@ -512,7 +512,7 @@ console.log("cart now =", cart);
     title="Shipping & Return"
     content={
       <p>
-        Fast dispatch from Surat, India. Worldwide shipping available. Easy
+        Fast dispatch from Surat, India. Worldwide shipping available. Delivered to USA in 7–12 days. Easy
         exchange as per policy.
       </p>
     }

@@ -5,6 +5,17 @@
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+import chart1 from "@/public/assets/images/chart1.jpeg";
+import chart2 from "@/public/assets/images/chart2.jpeg";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -342,12 +353,45 @@ console.log("cart now =", cart);
           ))}
         </div>
     </div>
-    <div className='mt-5 overflow-auto'>
-        <p className='mb-2'>
-          <span className='font-semibold'>
-            Size: {variant?.size || 'N/A'}
-          </span>
-        </p>
+    <div className="mt-5 overflow-auto">
+  <div className="flex items-center justify-between mb-2">
+    <span className="font-semibold">
+      Size: {variant?.size || "N/A"}
+    </span>
+
+    {/* VIEW SIZE CHART BUTTON */}
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="text-sm font-medium underline text-primary hover:text-primary/80"
+        >
+          View Size Chart
+        </button>
+      </DialogTrigger>
+
+      <DialogContent className="max-w-3xl w-full">
+        <DialogHeader>
+          <DialogTitle>Size Chart</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-6">
+          <Image
+            src={chart1}
+            alt="Size Chart 1"
+            className="w-full h-auto rounded-md"
+          />
+
+          <Image
+            src={chart2}
+            alt="Size Chart 2"
+            className="w-full h-auto rounded-md"
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
+  </div>
+
         <div className="flex gap-5 overflow-auto">
           {sizes.map( size => (
             <Link onClick={() => setIsProductLoading(true)} href={`${PRODUCT_DETAILS(product.slug)}?color=${variant.color}&size=${size}`} key={size} className={`border py-1 px-3 rounded-lg cursor-pointer hover:bg-primary hover:text-white ${size === variant.size ? 'bg-primary text-white' : ''}`}>
